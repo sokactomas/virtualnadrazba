@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:generate": "prisma generate",
+    "prisma:migrate": "npx prisma migrate dev --name init",
+    "prisma:generate": "npx prisma generate",
     "prisma:seed": "node prisma/seed.js",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "npx prisma studio"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",
