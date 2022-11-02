@@ -1,6 +1,13 @@
 import { NextPageWithLayout } from "~/pages/_app";
+import { useState, useRef } from "react";
 
 const Detail: NextPageWithLayout = () => {
+    const [show, setShow] = useState<boolean>(false);
+
+    const toggleShow = () => {
+        setShow(!show);
+    }
+
     return (
         <div className="w-full lg:w-[1280px] px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
@@ -207,7 +214,7 @@ const Detail: NextPageWithLayout = () => {
                             <div>Vozidlo bolo nezávisle overené odborníkom z autobazar.eu</div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                    <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
                         <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
                             <div>
                                 <div className="font-bold mb-1">História vozidla</div>
@@ -223,7 +230,7 @@ const Detail: NextPageWithLayout = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                    <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
                         <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
                             <div className="h-12">
                                 <img src="https://www.autopredajcaroka.eu/images/badge-result.svg" className="h-12 m-auto" />
@@ -245,7 +252,7 @@ const Detail: NextPageWithLayout = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 rounded-md border p-5 shadow-2xl">
+                <div className={"mt-8 rounded-md border p-5 shadow-2xl md:block" + (!show ? " hidden" : "")}>
                     <div className="flex items-center">
                         <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" className="rounded-md h-16 w-16" />
                         <div className="ml-4">
@@ -283,6 +290,15 @@ const Detail: NextPageWithLayout = () => {
                         </li>
                     </ul>
                     <div className="mt-4">Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
+                </div>
+
+                <div className="mt-4 flex flex-row justify-center cursor-pointer select-none md:hidden" onClick={toggleShow}>
+                    <span className={(show ? 'rotate-180' : '')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </span>
+                    <span className="ml-1">{(show ? "Zobraziť menej" : "Zobraziť viac")}</span>
                 </div>
             </aside>
         </div>
