@@ -2,15 +2,17 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC } from "react";
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { useRouter } from "next/router";
 
 export const Header:FC = () => {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const renderAuth = () => {
         if (session) {
             return (
                 <div className='flex items-center space-x-2'>
-                    <Link href={'/account'} className='text-gray-700 hover:underline hover:text-red-600'>
+                    <Link href={'/account'} className={`hover:underline hover:text-red-600 ${router?.asPath.startsWith('/account') ? 'text-red-600 underline' : 'text-gray-700'}`}>
                         Moje konto
                     </Link>
                     <span>
@@ -24,15 +26,17 @@ export const Header:FC = () => {
         }
 
         return (
-            <button onClick={() => signIn()} className='button-primary'>
-                prihlásiť
+            <button onClick={() => signIn('credentials', {
+                callbackUrl: '/account'
+            })} className='underline hover:text-red-600'>
+                prihlásiť sa
             </button>
         )
     }
 
     return (
         <header className="fixed top-0 left-0 right-0 bg-white z-10 h-[56px] shadow-sm flex items-center justify-center">
-            <div className="w-full lg:w-[1280px] px-5 h-full flex items-center justify-between">
+            <div className="w-full lg:w-4/5 px-5 h-full flex items-center justify-between">
                 <Link href={"/"} className="text-3xl font-bold">
                     Drazba.eu
                 </Link>

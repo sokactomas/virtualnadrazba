@@ -36,7 +36,7 @@ body {
 
 @layer components {
     .button-primary {
-        @apply border py-2 px-6 rounded-full border-red-600 text-red-600 transition hover:bg-red-600 hover:text-white
+        @apply border py-1.5 px-4 text-sm font-semibold rounded-xl border-red-600 text-red-600 transition hover:bg-red-600 hover:text-white
     }
 }
 
