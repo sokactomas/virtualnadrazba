@@ -19,19 +19,24 @@ const Account: NextPageWithLayout = () => {
         }
 
         return (
-            <>
+            <div className="space-y-2">
+                <div className="text-xl">
+                    Moja ponuka
+                </div>
                 <InvalidRecord />
                 <Record />
                 <Record />
                 <Record />
-            </>
+            </div>
         )
     }
 
     return (
         <div className="w-full lg:w-4/5 py-2 px-5 lg:p-0 space-y-4">
             <div className='flex items-center justify-between'>
-                <div className="text-2xl font-semibold">Moje konto</div>
+                <div className="text-2xl font-semibold">
+                    Moje konto
+                </div>
                 <div>
                     <Link href={'/create'} className="button-primary">
                         Pridať do dražby

@@ -20,6 +20,7 @@ export const authOptions = {
             },
 
             async authorize(credentials, req) {
+                console.log(credentials);
                 const user = await prisma.user.findUnique({
                     where: {
                         email: credentials?.email
@@ -30,8 +31,7 @@ export const authOptions = {
                     return false;
                 }
 
-                const checkPassword = true;
-                //const checkPassword = bcrypt.compareSync(credentials.password, user.password);
+                const checkPassword = bcrypt.compareSync(credentials.password, user.password);
 
                 if (!checkPassword) {
                     return false;

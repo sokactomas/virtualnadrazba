@@ -30,7 +30,7 @@ export const Record: FC<RecordProps> = ({ record }) => {
         if (duration) {
             return (
                 <span>
-                    {duration.days()} Dní {duration.hours()}:{duration.minutes()}:{duration.seconds()}
+                    {duration.days()} dní {duration.hours()}:{duration.minutes()}:{duration.seconds()}
                 </span>
             )
         }
@@ -43,7 +43,7 @@ export const Record: FC<RecordProps> = ({ record }) => {
 
     const renderCreatedAt = () => {
         const createdAt = moment(record.createdAt);
-        const duration = moment.duration(createdAt.diff(moment()))
+        const duration = moment.duration(moment().diff(createdAt))
         if (duration.hours() <= 1) {
             return (
                 <span className="flex items-center space-x-1">

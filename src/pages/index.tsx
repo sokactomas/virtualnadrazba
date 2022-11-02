@@ -5,7 +5,7 @@ import { trpc } from "~/utils/trpc";
 
 const Homepage: NextPageWithLayout = () => {
     const recordQuery = trpc.record.list.useInfiniteQuery({
-        limit: 2
+        limit: 20,
     }, {
         getNextPageParam(lastPage) {
             return lastPage.nextCursor;
