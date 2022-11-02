@@ -10,6 +10,9 @@ export const Header:FC = () => {
         if (session) {
             return (
                 <div className='flex items-center space-x-2'>
+                    <Link href={'/account'} className='text-gray-700 hover:underline hover:text-red-600'>
+                        Moje konto
+                    </Link>
                     <span>
                         Prihlasený ako <span className="font-semibold">{session?.user?.name}</span>
                     </span>
@@ -21,7 +24,7 @@ export const Header:FC = () => {
         }
 
         return (
-            <button onClick={() => signIn()} className='border border-1 py-2 px-6 rounded-full border-red-600 text-red-600 transition hover:bg-red-600 hover:text-white'>
+            <button onClick={() => signIn()} className='button-primary'>
                 prihlásiť
             </button>
         )

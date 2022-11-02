@@ -29,3 +29,13 @@ a {
         background: black;
     }
 }
+
+body {
+    @apply bg-gray-50 h-screen pt-14;
+}
+
+@layer components {
+    .button-primary {
+        @apply border py-2 px-6 rounded-full border-red-600 text-red-600 transition hover:bg-red-600 hover:text-white
+    }
+}
