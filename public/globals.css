@@ -39,3 +39,23 @@ body {
         @apply border py-2 px-6 rounded-full border-red-600 text-red-600 transition hover:bg-red-600 hover:text-white
     }
 }
+
+.p-content {
+    @apply w-[100%] md:w-[60%] xl:w-[70%]
+}
+
+.p-info {
+    @apply w-[100%]
+}
+
+@media (min-width: 768px) {
+    .p-info {
+        width: calc(40% - 32px);
+    }
+}
+
+@media (min-width: 1280px) {
+    .p-info {
+        width: calc(30% - 32px);
+    }
+}

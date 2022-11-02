@@ -15,7 +15,7 @@ export const Layout = ({ children }: LayoutProps) => {
             </Head>
             <div className='flex flex-col min-h-[calc(100vh-56px)]'>
                 <Header />
-                <main className="w-full flex-1 flex justify-center sm:p-2 md:p-3 lg:p-5">
+                <main className="w-full flex-1 flex justify-center sm:py-2 md:py-3 lg:py-5">
                     {children}
                 </main>
                 <Footer />
