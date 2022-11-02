@@ -12,7 +12,7 @@ export const Header:FC = () => {
         if (session) {
             return (
                 <div className='flex items-center space-x-2'>
-                    <Link href={'/account'} className={`hover:underline hover:text-red-600 ${router?.asPath === '/account' ? 'text-red-600 underline' : 'text-gray-700'}`}>
+                    <Link href={'/account'} className={`hover:underline hover:text-red-600 ${router?.asPath.startsWith('/account') ? 'text-red-600 underline' : 'text-gray-700'}`}>
                         Moje konto
                     </Link>
                     <span>
@@ -26,8 +26,10 @@ export const Header:FC = () => {
         }
 
         return (
-            <button onClick={() => signIn()} className='button-primary'>
-                prihlásiť
+            <button onClick={() => signIn('credentials', {
+                callbackUrl: '/account'
+            })} className='underline hover:text-red-600'>
+                prihlásiť sa
             </button>
         )
     }
