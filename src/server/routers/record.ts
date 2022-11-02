@@ -1,7 +1,18 @@
 import { publicProcedure, router } from "../trpc";
-import { z } from 'zod';
 import { prisma } from '~/server/prisma';
 import moment from "moment";
+import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
+import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
+import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
+import { z } from 'zod';
+
+const config = new PlatformCoreConfig();
+
+const advertisementService: AdvertisementService = new AdvertisementService(
+    new AdvertisementServiceClientConfig(
+        config
+    )
+);
 
 export const recordRouter = router({
     list: publicProcedure
@@ -38,8 +49,42 @@ export const recordRouter = router({
                 nextCursor = nextItem.id;
             }
 
+            const platformIds: string[] = [];
+            items?.forEach((item) => {
+                if (item?.platformId) {
+                    platformIds.push(item.platformId);
+                }
+            })
+
+            const filter = JSON.stringify({
+                where: {
+                    id: {
+                        inq: platformIds
+                    }
+                },
+                extended: {
+                    image: {
+                        thumbs: {
+                            thumbnail: [{ "Resize": [192, 146, false] }],
+                        }
+                    }
+                },
+                limit
+            })
+
+            const advertisements = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
+
+            const records: any = [];
+            items?.forEach((item) => {
+                const advertisement = advertisements?.data?.find((ad) => ad.id === item?.platformId);
+                records.push({
+                    ...item,
+                    image: advertisement?.image
+                })
+            })
+
             return {
-                items: items,
+                items: records,
                 nextCursor,
             };
         }),
@@ -52,7 +97,7 @@ export const recordRouter = router({
             platformId: z.string().nullish()
         }))
         .mutation(async ({ input }) => {
-            const days = Math.random() * (30 - 5) + 5;
+            const days = Math.random() * (30 - 1) + 1;
 
             const event = prisma.record.create({
                 data: {
@@ -60,7 +105,8 @@ export const recordRouter = router({
                     type: input?.type,
                     price: input?.price,
                     userId: input?.userId,
-                    validUntil: moment().add(days, 'days').toDate()
+                    validUntil: moment().add(days, 'days').toDate(),
+                    platformId: input?.platformId
                 }
             })
             return event;

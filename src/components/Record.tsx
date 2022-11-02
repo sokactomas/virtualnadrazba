@@ -1,7 +1,8 @@
-import {  ClockIcon, EyeIcon, FireIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {  ClockIcon, EyeIcon, FireIcon, PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TagIcon } from "@heroicons/react/24/solid";
 import moment, { Duration } from "moment";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
@@ -85,10 +86,22 @@ export const Record: FC<RecordProps> = ({ record }) => {
         return null;
     }
 
+    const renderImage = () => {
+        if (record?.image) {
+            return <Image src={record?.image?.previewUrls?.thumbnail || ''} alt={record?.title} layout='fill' objectFit='cover' />
+        }
+
+        return (
+            <PhotoIcon className="w-2/3 h-2/3 text-gray-200" />
+        );
+    }
+
     return (
         <div className='flex flex-col w-full bg-white border-2 border-gray-200'>
             <div className="flex p-4">
-                <div className="bg-gray-200 flex-[192px] shrink-0 grow-0 h-[146px]" />
+                <div className="relative flex-[192px] shrink-0 grow-0 h-[146px] flex items-center justify-center">
+                    {renderImage()}
+                </div>
                 <div className="px-2 w-full flex flex-col items-start justify-between">
                     <div className="space-y-1">
                         <div className='text-lg font-semibold'>

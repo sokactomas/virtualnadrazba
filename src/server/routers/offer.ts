@@ -13,6 +13,27 @@ const advertisementService: AdvertisementService = new AdvertisementService(
 );
 
 export const offerRouter = router({
+    get: publicProcedure
+        .input(z.object({
+            id: z.string(),
+        }))
+        .query(async ({ input }) => {
+            const filter = JSON.stringify({
+                where: {
+                    id: input?.id
+                },
+                extended: {
+                    image: {
+                        thumbs: {
+                            thumbnail: [{ "Resize": [192, 146, false] }],
+                        }
+                    }
+                },
+            });
+
+            const items = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
+            return items?.data?.length > 0 ? items?.data[0] : null;
+        }),
     list: publicProcedure
         .input(z.object({
             userId: z.string(),
