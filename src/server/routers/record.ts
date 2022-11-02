@@ -8,14 +8,20 @@ export const recordRouter = router({
         .input(z.object({
             limit: z.number().min(1).max(100).nullish(),
             cursor: z.number().nullish(),
+            userId: z.number().positive().nullish()
         }))
         .query(async ({ input }) => {
             const limit = input?.limit || 50;
             const cursor: any  = input?.cursor;
 
+            const where: any = {};
+            if (input?.userId) {
+                where['userId'] = input?.userId;
+            }
+
             const items = await prisma.record.findMany({
                 take: limit + 1,
-                where: {},
+                where: where,
                 cursor: cursor ? {
                         id: cursor
                     } : undefined,

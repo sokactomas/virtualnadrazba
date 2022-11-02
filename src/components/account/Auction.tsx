@@ -1,17 +1,20 @@
-import { Fragment } from "react";
-import { Record } from "~/components/Record";
-import { NextPageWithLayout } from "~/pages/_app";
+import { useSession } from "next-auth/react";
+import { FC, Fragment } from "react";
 import { trpc } from "~/utils/trpc";
+import { Record } from "../Record";
 
-const Homepage: NextPageWithLayout = () => {
+export const Auction: FC = () => {
+    const { data: session } = useSession();
+
     const recordQuery = trpc.record.list.useInfiniteQuery({
-        limit: 2
+        limit: 2,
+        userId: session?.user?.id
     }, {
         getNextPageParam(lastPage) {
             return lastPage.nextCursor;
         },
     });
-    
+
     const renderRecords = () => {
         if (!recordQuery.isLoading) {
             return recordQuery?.data?.pages?.map((page, index) => (
@@ -27,9 +30,9 @@ const Homepage: NextPageWithLayout = () => {
     }
 
     return (
-        <div className="w-full lg:w-4/5 py-2 px-5 lg:p-0 space-y-4">
+        <div className="space-y-4">
             <div className="flex flex-col w-full space-y-2">
-            { renderRecords() }
+                { renderRecords() }
             </div>
             <div className="flex items-center justify-center">
                 <button
@@ -49,5 +52,3 @@ const Homepage: NextPageWithLayout = () => {
         </div>
     )
 }
-
-export default Homepage;
