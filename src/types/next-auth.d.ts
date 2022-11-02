@@ -6,6 +6,7 @@ export module "next-auth" {
             id: number,
             name: string,
             email: string,
+            platformId: string,
         }
     }
 }

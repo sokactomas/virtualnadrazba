@@ -49,6 +49,7 @@ export const recordRouter = router({
             price: z.number().min(1).positive(),
             type: z.number(),
             userId: z.number(),
+            platformId: z.string().nullish()
         }))
         .mutation(async ({ input }) => {
             const days = Math.random() * (30 - 5) + 5;

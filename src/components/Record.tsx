@@ -1,6 +1,7 @@
-import {  ClockIcon, EyeIcon, FireIcon } from "@heroicons/react/24/outline";
+import {  ClockIcon, EyeIcon, FireIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TagIcon } from "@heroicons/react/24/solid";
 import moment, { Duration } from "moment";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
@@ -10,6 +11,7 @@ type RecordProps = {
 
 export const Record: FC<RecordProps> = ({ record }) => {
     const [duration, setDuration] = useState<Duration|null>(null);
+    const { data: session } = useSession();
 
     useEffect(() => {
         let interval: any = null;
@@ -70,6 +72,19 @@ export const Record: FC<RecordProps> = ({ record }) => {
         return 'rýchla dražba';
     }
 
+    const renderCancel = () => {
+        if (session?.user?.id === record?.userId) {
+            return (
+                <button className='flex items-center space-x-2 button-primary'>
+                    <XMarkIcon className="w-5 h-5" />
+                    <span>ukončiť dražbu</span>
+                </button>
+            )
+        }
+
+        return null;
+    }
+
     return (
         <div className='flex flex-col w-full bg-white border-2 border-gray-200'>
             <div className="flex p-4">
@@ -106,10 +121,13 @@ export const Record: FC<RecordProps> = ({ record }) => {
                                 </span>
                             </div>
                         </div>
-                        <Link href={'/detail/1'} className='flex items-center space-x-2 hover:underline hover:text-red-600'>
-                            <EyeIcon className="w-5 h-5" />
-                            <span>zobraziť detail</span>
-                        </Link>
+                        <div className="flex items-center space-x-2">
+                            <Link href={`/detail/${record?.id}`} className='flex items-center space-x-2 hover:underline hover:text-red-600'>
+                                <EyeIcon className="w-5 h-5" />
+                                <span>zobraziť detail</span>
+                            </Link>
+                            { renderCancel() }
+                        </div>
                     </div>
                 </div>
             </div>

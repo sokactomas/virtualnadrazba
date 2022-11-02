@@ -1,3 +1,4 @@
+import { Offer } from "~/components/account/Offer";
 import { Record } from "~/components/create/Record";
 import { NextPageWithLayout } from "~/pages/_app";
 
@@ -11,11 +12,7 @@ const Create: NextPageWithLayout = () => {
                 Vyberte si spomedzi svojích inzerátov, ktorý inzerát chcete pridať do dražby.
             </span>
 
-            <div className='space-y-2'>
-                <Record />
-                <Record />
-                <Record />
-            </div>
+            <Offer />
         </div>
     )
 }

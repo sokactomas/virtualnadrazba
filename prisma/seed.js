@@ -14,8 +14,9 @@ const load = async () => {
         await prisma.user.create({
             data: {
                 name: 'johndoe',
-                password: bcrypt.hashSync('password', 8),
-                email: 'johndoe@drazba.eu'
+                password: bcrypt.hashSync('superheslo', 8),
+                email: 'johndoe@gmail.com',
+                platformId: '130b942e-5b0b-43c7-8fa5-7e65b991756b'
             }
         })
 

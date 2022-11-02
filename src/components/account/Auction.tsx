@@ -16,27 +16,39 @@ export const Auction: FC = () => {
     });
 
     const renderRecords = () => {
+        let hasRecords = false;
+        let records;
         if (!recordQuery.isLoading) {
-            return recordQuery?.data?.pages?.map((page, index) => (
-                <Fragment key={page.items[0]?.id || index}>
-                    {page.items.map((item) => (
-                        <Record key={item.id} record={item} />
-                    ))}
-                </Fragment>
-            ))
+            records = recordQuery?.data?.pages?.map((page, index) => {
+                if (page?.items?.length !== 0) {
+                    hasRecords = true;
+                }
+                return (
+                    <Fragment key={page.items[0]?.id || index}>
+                        {page.items.map((item) => (
+                            <Record key={item.id} record={item} />
+                        ))}
+                    </Fragment>
+                )
+            })
         }
 
-        return null
-    }
+        if (!hasRecords && !recordQuery.isFetching) {
+            return (
+                <div className="bg-sky-50 text-sky-900 p-4 border border-sky-200">
+                    Momentálne nemáte žiadne inzeráty v dražbe
+                </div>
+            )
+        }
 
-    return (
-        <div className="space-y-2">
-            <div className="text-xl">
-                Moje dražby
-            </div>
-            <div className="space-y-4">
+        if (!records) {
+            return null;
+        }
+
+        return (
+            <Fragment>
                 <div className="flex flex-col w-full space-y-2">
-                    { renderRecords() }
+                    { records }
                 </div>
                 <div className="flex items-center justify-center">
                     <button
@@ -53,6 +65,17 @@ export const Auction: FC = () => {
                                 : 'Všetky výsledky sú zobrazené'}
                     </button>
                 </div>
+            </Fragment>
+        );
+    }
+
+    return (
+        <div className="space-y-2">
+            <div className="text-xl">
+                Moje dražby
+            </div>
+            <div className="space-y-4">
+                { renderRecords() }
             </div>
         </div>
     )

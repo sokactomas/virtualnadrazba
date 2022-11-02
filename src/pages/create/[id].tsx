@@ -27,7 +27,8 @@ const CreateRecord: NextPageWithLayout = () => {
             title,
             price,
             type,
-            userId: session?.user?.id as number
+            userId: session?.user?.id as number,
+            platformId: router?.query?.id as string
         })
     }
 
