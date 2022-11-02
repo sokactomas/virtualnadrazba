@@ -2,7 +2,7 @@ import { NextPageWithLayout } from "~/pages/_app";
 
 const Detail: NextPageWithLayout = () => {
     return (
-        <div className="w-full lg:w-[1280px] px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
+        <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
                 <h1 className="mt-0 mb-6 text-2xl">Škoda Superb Combi 2.0 TDI 190k Sportline EU6</h1>
                 <div className="rounded-md overflow-hidden">

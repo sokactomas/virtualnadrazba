@@ -1,5 +1,6 @@
 import { ArchiveBoxIcon, PlusIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { InvalidRecord } from "~/components/create/InvalidRecord";
 import { Record } from "~/components/create/Record";
 import { NextPageWithLayout } from "../_app";
 
@@ -38,6 +39,7 @@ const Account: NextPageWithLayout = () => {
                     </ul>
                 </div>
                 <div className='md:col-span-4 lg:col-span-3'>
+                    <InvalidRecord />
                     <Record />
                     <Record />
                     <Record />
