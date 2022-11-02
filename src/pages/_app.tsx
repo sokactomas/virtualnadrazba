@@ -4,6 +4,7 @@ import type { AppProps, AppType } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { Layout } from "~/components/Layout";
 import { SessionProvider } from "next-auth/react";
+import { trpc } from '~/utils/trpc';
 
 export type NextPageWithLayout<TProps = Record<string, unknown>, TInitialProps = TProps> = NextPage<TProps, TInitialProps> & {
     getLayout?: (page: ReactElement) => ReactNode
@@ -22,4 +23,4 @@ const App = (({ Component, pageProps: { session, ...pageProps} }: AppPropsWithLa
     ) 
 }) as AppType;
 
-export default App;
+export default trpc.withTRPC(App);

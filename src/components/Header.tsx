@@ -27,6 +27,7 @@ export const Header:FC = () => {
 
         return (
             <button onClick={() => signIn('credentials', {
+                email: 'johndoe@drazba.eu',
                 callbackUrl: '/account'
             })} className='underline hover:text-red-600'>
                 prihlásiť sa
