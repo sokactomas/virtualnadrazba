@@ -173,67 +173,77 @@ const Detail: NextPageWithLayout = () => {
                 </div>
             </article>
             <aside className="p-info">
-                <div className="info">
-                    <div className="date">
-                        <span>Aukcia končí za</span>
-                        <span>5 dní 20:30:40</span>
-                    </div>
-                    <div className="date">
-                        <span>Forma aukcie</span>
-                        <span>Tichá</span>
-                    </div>
-                    <div className="price">
-                        <span>Minimálna ponúknutá suma</span>
-                        <span>21 000 €</span>
-                    </div>
-                </div>
-                <form>
-                    <div className="col-span-3 sm:col-span-2">
-                        <label htmlFor="company-website"
-                               className="block text-sm font-medium text-gray-700">Website</label>
-                        <div className="mt-1 flex rounded-md shadow-sm">
-                            <span
-                                className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">€</span>
-                            <input type="price" name="company-website" id="company-website" value="21000" min="21000" step="100"
-                                   className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                   placeholder="21000"/>
+                <div className="md:rounded-md md:border md:p-5">
+                    <ul className="grid grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-2 text-center">
+                        <li>
+                            <span>Aukcia končí za</span>
+                            <span className="block font-bold text-2xl">5 dní 20:30:40</span>
+                        </li>
+                        <li>
+                            <span>Min. ponúknutá suma</span>
+                            <span className="block font-bold text-2xl">21 000 €</span>
+                        </li>
+                    </ul>
+                    <form className="mt-4">
+                        <div className="col-span-3 sm:col-span-2">
+                            <div className="mt-1 flex rounded-md shadow-sm">
+                                <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">€</span>
+                                <input type="number" name="price" id="company-website" value="21000" min="21000" step="100" className="block w-full p-2 rounded-none rounded-r-md border border-gray-300 sm:text-sm" placeholder="21000"/>
+                            </div>
                         </div>
-                    </div>
-                    <button>Prihodiť na vozidlo</button>
-                </form>
-                <div className="contact">
-                    <h2 className="name">TM-Auto</h2>
-                    <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" />
-                    <div>Profesionálny predajca Profesionálny predajca</div>
-                    <div>Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
+                        <button type="button" className="mt-4 w-full bg-amber-600 p-2 text-white rounded-md border border-amber-700">Prihodiť na vozidlo</button>
+                    </form>
                 </div>
 
-                <div className="trust-items">
-                    <div className="item full done">
-                        <h1>Overené nezávisle</h1>
-                        <div>Vozidlo bolo overené odborníkom z autobazar.eu</div>
+                <div className="mt-8">
+                    <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100 flex items-center justify-center">
+                        <div className="w-12 h-12 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                        <div className="">
+                            <div className="font-bold text-lg mb-1">Overené nezávisle</div>
+                            <div>Vozidlo bolo overené odborníkom z autobazar.eu</div>
+                        </div>
                     </div>
-                    <div className="item half">
-                        <h1>Vitaz autopredajca roka</h1>
-                        <div>Predavajuci bol vitazom autopredajcu roka v roku 2021.</div>
+                    <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                            <div>
+                                <div className="font-bold mb-1">História vozidla</div>
+                                <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
+                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť vozidlo</button>
+                            </div>
+                        </div>
+                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                            <div>
+                                <div className="font-bold mb-1">Overenie STK a EK</div>
+                                <div>Overenie STK a EK z online zdrojov.</div>
+                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť STK / EK</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="item half">
-                        <h1>Hodnotenie zákazníkov</h1>
-                        <span>9.5 <small>/ 10</small></span>
-                        <div>Hodnotenia zakaznikov z drazby</div>
+                    <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                        <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
+                            <div className="h-12">
+                                <img src="https://www.autopredajcaroka.eu/images/badge-result.svg" className="h-12 m-auto" />
+                            </div>
+                            <div>
+                                <div className="font-bold mb-1">Vitaz autopredajca roka</div>
+                                <div>Predavajuci bol vitazom autopredajcu roka v roku 2021.</div>
+                            </div>
+                        </div>
+                        <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
+                            <div className="h-12 text-center">
+                                <span className="text-3xl">9.5 <small className="text-base">/ 10</small></span>
+                            </div>
+                            <div>
+                                <div className="font-bold mb-1">Hodnotenie zákazníkov</div>
+                                <div>Hodnotili prechádzajúci zákazníci.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="item small">
-                        <h1>Overenie vozidla</h1>
-                        <div>Overenie vozidla z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie kilometrov</h1>
-                        <div>Overenie kilometrov z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie platnosti STK a EK</h1>
-                        <div>Overenie STK a EK z online zdrojov</div>
-                    </div>
+
                     <div className="item small">
                         <h1>Overenie originality</h1>
                         <div>Overenie originality z online zdrojov</div>
@@ -258,6 +268,13 @@ const Detail: NextPageWithLayout = () => {
                         <h1>Veľkosť inzercie</h1>
                         <div>Predávajúci má na predaj ďalších 34 vozidiel.</div>
                     </div>
+                </div>
+
+                <div className="mt-8 md:rounded-md md:border md:p-5">
+                    <h2 className="name">TM-Auto</h2>
+                    <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" />
+                    <div>Profesionálny predajca Profesionálny predajca</div>
+                    <div>Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
                 </div>
 
                 <div className="motivation-items">

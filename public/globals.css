@@ -41,7 +41,7 @@ body {
 }
 
 .p-content {
-    @apply w-[100%] md:w-[60%] xl:w-[70%]
+    @apply w-[100%] md:w-[60%] xl:w-[65%]
 }
 
 .p-info {
@@ -56,6 +56,6 @@ body {
 
 @media (min-width: 1280px) {
     .p-info {
-        width: calc(30% - 32px);
+        width: calc(35% - 32px);
     }
 }
