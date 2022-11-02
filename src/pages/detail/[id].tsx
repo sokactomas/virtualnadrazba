@@ -2,7 +2,7 @@ import { NextPageWithLayout } from "~/pages/_app";
 
 const Detail: NextPageWithLayout = () => {
     return (
-        <div className="w-full lg:w-[1280px] flex justify-center">
+        <div className="w-full lg:w-[1280px] px-5 h-full flex justify-between">
             <article className="detail">
                 <h1>Škoda Superb Combi 2.0 TDI 190k Sportline EU6</h1>
                 <div className="gallery">
