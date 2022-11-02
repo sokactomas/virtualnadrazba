@@ -7,12 +7,35 @@ export const recordRouter = router({
     list: publicProcedure
         .input(z.object({
             limit: z.number().min(1).max(100).nullish(),
+            cursor: z.number().nullish(),
         }))
         .query(async ({ input }) => {
             const limit = input?.limit || 50;
-            return await prisma.record.findMany({
-                take: limit + 1
+            const cursor: any  = input?.cursor;
+
+            const items = await prisma.record.findMany({
+                take: limit + 1,
+                where: {},
+                cursor: cursor ? {
+                        id: cursor
+                    } : undefined,
+                orderBy: {
+                    createdAt: 'desc',
+                },
             });
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (items.length > limit) {
+                // Remove the last item and use it as next cursor
+
+                const nextItem = items.pop()!;
+                nextCursor = nextItem.id;
+            }
+
+            return {
+                items: items,
+                nextCursor,
+            };
         }),
     create: publicProcedure
         .input(z.object({

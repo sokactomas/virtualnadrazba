@@ -5,8 +5,8 @@ import { FC } from "react";
 
 export const InvalidRecord: FC = () => {
     return (
-        <div className='flex w-full hover:shadow-md p-4 rounded-xl'>
-            <div className="bg-gray-200 rounded-xl flex-[192px] shrink-0 grow-0 h-[146px] relative">
+        <div className='flex w-full bg-white p-4'>
+            <div className="bg-gray-200 flex-[192px] shrink-0 grow-0 h-[146px] relative">
                 <div className="absolute top-2 left-2">
                     <ExclamationTriangleIcon className="w-6 h-6 text-red-600" />
                 </div>

@@ -38,7 +38,7 @@ const Account: NextPageWithLayout = () => {
                         </li>
                     </ul>
                 </div>
-                <div className='md:col-span-4 lg:col-span-3'>
+                <div className='md:col-span-4 lg:col-span-3 space-y-2'>
                     <InvalidRecord />
                     <Record />
                     <Record />

@@ -5,8 +5,8 @@ import { FC } from "react";
 
 export const Record: FC = () => {
     return (
-        <div className='flex w-full hover:shadow-md p-4 rounded-xl'>
-            <div className="bg-gray-200 rounded-xl flex-[192px] shrink-0 grow-0 h-[146px]" />
+        <div className='flex w-full bg-white p-4'>
+            <div className="bg-gray-200 flex-[192px] shrink-0 grow-0 h-[146px]" />
             <div className="px-2 w-full flex flex-col items-start justify-between">
                 <div className="space-y-2">
                     <div className='text-lg font-semibold'>
