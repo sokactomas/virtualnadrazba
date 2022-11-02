@@ -173,7 +173,7 @@ const Detail: NextPageWithLayout = () => {
                 </div>
             </article>
             <aside className="p-info">
-                <div className="md:rounded-md md:border md:p-5">
+                <div className="rounded-md border p-5 shadow-2xl">
                     <ul className="grid grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-2 text-center">
                         <li>
                             <span>Aukcia končí za</span>
@@ -199,12 +199,12 @@ const Detail: NextPageWithLayout = () => {
                     <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100 flex items-center justify-center">
                         <div className="w-12 h-12 mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                             </svg>
                         </div>
                         <div className="">
                             <div className="font-bold text-lg mb-1">Overené nezávisle</div>
-                            <div>Vozidlo bolo overené odborníkom z autobazar.eu</div>
+                            <div>Vozidlo bolo nezávisle overené odborníkom z autobazar.eu</div>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
@@ -243,90 +243,46 @@ const Detail: NextPageWithLayout = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div className="item small">
-                        <h1>Overenie originality</h1>
-                        <div>Overenie originality z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie kradnuté</h1>
-                        <div>Overenie či bolo vozidlo kradnuté, z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie záujemcami</h1>
-                        <div>Počet kladných hodnotení záujemcov o toto vozidlo: 452</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie záujemcami</h1>
-                        <div>Počet kladných hodnotení záujemcov o toto vozidlo: 452</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Na trhu</h1>
-                        <div>Predávajúci je na trhu od 15.02.2012</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Veľkosť inzercie</h1>
-                        <div>Predávajúci má na predaj ďalších 34 vozidiel.</div>
-                    </div>
                 </div>
 
-                <div className="mt-8 md:rounded-md md:border md:p-5">
-                    <h2 className="name">TM-Auto</h2>
-                    <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" />
-                    <div>Profesionálny predajca Profesionálny predajca</div>
-                    <div>Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
-                </div>
-
-                <div className="motivation-items">
-                    <div className="item full done">
-                        <h1>Overené nezávisle</h1>
-                        <div>Vozidlo bolo overené odborníkom z autobazar.eu</div>
+                <div className="mt-8 rounded-md border p-5 shadow-2xl">
+                    <div className="flex items-center">
+                        <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" className="rounded-md h-16 w-16" />
+                        <div className="ml-4">
+                            <h2 className="text-lg font-bold">TM-Auto</h2>
+                            <div className="flex">
+                                <img src="https://tm-auto.autobazar.eu/assets/images/icons/profesionlny-predajca.svg" alt="" />
+                                <span className="ml-1">Profesionálny predajca</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="item half">
-                        <h1>Vitaz autopredajca roka</h1>
-                        <div>Predavajuci bol vitazom autopredajcu roka v roku 2021.</div>
-                    </div>
-                    <div className="item half">
-                        <h1>Hodnotenie zákazníkov</h1>
-                        <span>9.5 <small>/ 10</small></span>
-                        <div>Hodnotenia zakaznikov z drazby</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie vozidla</h1>
-                        <div>Overenie vozidla z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie kilometrov</h1>
-                        <div>Overenie kilometrov z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie platnosti STK a EK</h1>
-                        <div>Overenie STK a EK z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie originality</h1>
-                        <div>Overenie originality z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie kradnuté</h1>
-                        <div>Overenie či bolo vozidlo kradnuté, z online zdrojov</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie záujemcami</h1>
-                        <div>Počet kladných hodnotení záujemcov o toto vozidlo: 452</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Overenie záujemcami</h1>
-                        <div>Počet kladných hodnotení záujemcov o toto vozidlo: 452</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Na trhu</h1>
-                        <div>Predávajúci je na trhu od 15.02.2012</div>
-                    </div>
-                    <div className="item small">
-                        <h1>Veľkosť inzercie</h1>
-                        <div>Predávajúci má na predaj ďalších 34 vozidiel.</div>
-                    </div>
+                    <ul className="mt-4">
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">prihlásime auto za vás</span>
+                        </li>
+                        <li className="text-red-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span className="pl-1">zabezpečíme dovoz auta</span>
+                        </li>
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">financovanie ukončené</span>
+                        </li>
+                        <li className="text-gray-500 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            </svg>
+                            <span className="pl-1">servisované v autorizovanom servise</span>
+                        </li>
+                    </ul>
+                    <div className="mt-4">Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
                 </div>
             </aside>
         </div>
