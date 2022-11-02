@@ -19,7 +19,7 @@ a {
     box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
     html {
         color-scheme: dark;
     }
@@ -28,7 +28,7 @@ a {
         color: white;
         background: black;
     }
-}
+}*/
 
 body {
     @apply bg-gray-50 h-screen pt-14;
