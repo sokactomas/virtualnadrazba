@@ -23,7 +23,7 @@ const App = (({ Component, pageProps: { session, ...pageProps} }: AppPropsWithLa
     ) 
 }) as AppType;
 
-App.getInitialProps = async ({ ctx }) => {
+App.getInitialProps = async ({ ctx }: { ctx: any }) => {
     return {
         session: await getSession(ctx)
     }
