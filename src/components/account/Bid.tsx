@@ -16,7 +16,7 @@ export const Bid: FC = () => {
     });
 
     const renderHighesPrice = (item: any) => {
-        if (false && item.price === item.record.bidPrice) {
+        if (item.price === item.record.bidPrice) {
             return (
                 <div>
                     Vaša ponuka je najvyššia!
