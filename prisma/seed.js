@@ -30,6 +30,14 @@ const load = async () => {
                 platformId: '1ebd84f8-9f3c-4047-a2e9-cf8beaa75f2d'
             }
         })
+        await prisma.user.create({
+            data: {
+                name: 'groot',
+                password: bcrypt.hashSync('superheslo', 8),
+                email: 'groot@gmail.com',
+                platformId: '1ebd84f8-9f3c-4047-a2e9-cf8beaa75f2d'
+            }
+        })
 
         console.log('User created.');
     } catch (e) {

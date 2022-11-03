@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { FC, Fragment } from "react";
 import { trpc } from "utils/trpc";
 
@@ -14,6 +15,27 @@ export const Bid: FC = () => {
         },
     });
 
+    const renderHighesPrice = (item: any) => {
+        if (item.price === item.record.bidPrice) {
+            return (
+                <div>
+                    Vaša ponuka je najvyššia!
+                </div>
+            )
+        }
+
+        const diffPrice = item.record.bidPrice - item.price;
+
+        return (
+            <div className="flex items-center justify-between">
+                <span>Najvyššia ponuka: {item.record.bidPrice.toLocaleString()} € (+ {diffPrice.toLocaleString()}€)</span>
+                <Link href={`/detail/${item.record.id}`} className="button-primary">
+                    Prihodiť
+                </Link>
+            </div>
+        )
+    }
+
     const renderRecords = () => {
         let hasRecords = false;
         let records;
@@ -25,7 +47,19 @@ export const Bid: FC = () => {
                 return (
                     <Fragment key={page.items[0]?.id || index}>
                         {page.items.map((item: any) => (
-                            <div key={item.id}>{JSON.stringify(item)}</div>
+                            <div key={item.id} className='bg-white p-4 border-2 border-gray-200'>
+                                <div className="text-xl font-bold">
+                                    {item.record.title}
+                                </div>
+                                <div>
+                                    <div>
+                                        Vaša ponuka: <span className="font-semibold">{item.price.toLocaleString()} €</span>
+                                    </div>
+                                    <div>
+                                        {renderHighesPrice(item)}
+                                    </div>
+                                </div>
+                            </div>
                         ))}
                     </Fragment>
                 )
@@ -35,7 +69,7 @@ export const Bid: FC = () => {
         if (!hasRecords && !bidQuery.isFetching) {
             return (
                 <div className="bg-sky-50 text-sky-900 p-4 border border-sky-200">
-                    Momentálne nemáte žiadne inzeráty v dražbe
+                    Momentálne nemáte žiadne cenové ponuky
                 </div>
             )
         }
