@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { BaseSyntheticEvent, FC, Fragment, useState } from "react";
-import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon, UserIcon } from '@heroicons/react/24/outline';
 import { useRouter } from "next/router";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
@@ -82,6 +82,14 @@ export const Header:FC = () => {
             )
         }
 
+        const signInAs = ({ email, password }: { email: string, password: string }) => {
+            signIn('credentials', {
+                email,
+                password: password,
+                callbackUrl: '/account'
+            })
+        }
+
         return (
             <>
                 <button type='button' onClick={() => setIsOpen(true)} className='underline hover:text-red-600'>
@@ -112,8 +120,11 @@ export const Header:FC = () => {
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                    <Dialog.Panel className="w-full space-y-2 max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                         <form className="space-y-2" onSubmit={handleOnSubmit}>
+                                            <div className="flex items-center justify-center">
+                                                <span className="text-xl font-bold">Prihlásenie</span>
+                                            </div>
                                             <div className="space-y-1">
                                                 <label htmlFor="email" className='block mb-2 text-sm font-medium text-gray-900'>
                                                     E-mail
@@ -134,6 +145,33 @@ export const Header:FC = () => {
                                                 Prihlásiť
                                             </button>
                                         </form>
+
+                                        <div>
+                                            <div className="flex items-center justify-center py-2">
+                                                <span className="uppercase font-semibold text-sm">Prihlásiť ako</span>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <button className="hover:bg-sky-100 flex items-center justify-center space-x-2 bg-sky-50 rounded-md text-sky-800 border border-sky-300 py-1 px-4 flex-1" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    signInAs({
+                                                        email: 'ponyslaystation@gmail.com',
+                                                        password: 'superheslo',
+                                                        })}}>
+                                                        <UserIcon className="w-4 h-4" />
+                                                        <span>ponyslaystation</span>
+                                                </button>
+                                                <button className="hover:bg-sky-100 flex items-center  justify-center space-x-2 bg-sky-50 rounded-md text-sky-800 border border-sky-300 py-1 px-4 flex-1" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    signInAs({
+                                                        email: 'johndoe@gmail.com',
+                                                        password: 'superheslo',
+                                                    })
+                                                }}>
+                                                    <UserIcon className="w-4 h-4" />
+                                                    <span>johndoe</span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>

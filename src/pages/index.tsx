@@ -6,7 +6,7 @@ import { RocketLaunchIcon } from "@heroicons/react/24/outline";
 
 const Homepage: NextPageWithLayout = () => {
     const recordQuery = trpc.record.list.useInfiniteQuery({
-        limit: 2,
+        limit: 10,
     }, {
         getNextPageParam(lastPage: any) {
             return lastPage.nextCursor;

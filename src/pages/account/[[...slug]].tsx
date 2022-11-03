@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Auction } from "components/account/Auction";
 import { Offer } from "components/account/Offer";
 import { NextPageWithLayout } from "../_app";
+import { Bid } from "components/account/Bid";
 
 const Account: NextPageWithLayout = () => {
     const router = useRouter();
@@ -12,18 +13,22 @@ const Account: NextPageWithLayout = () => {
 
     const renderContent = () => {
         const content = slug ? slug[0] : undefined;
-        if (content === 'auction') {
-            return <Auction />
-        }
 
-        return  (
-             <div className="space-y-2">
-            <div className="text-xl">
-                Moja ponuka
-            </div>
-                <Offer />
-            </div>
-        )
+        switch (content) {
+            case 'auction':
+                return <Auction />
+            case 'bid':
+                return <Bid />
+            default:
+                return (
+                    <div className="space-y-2">
+                        <div className="text-xl">
+                            Moja ponuka
+                        </div>
+                        <Offer />
+                    </div>
+                )
+        }
     }
 
     return (
@@ -54,7 +59,7 @@ const Account: NextPageWithLayout = () => {
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/account/bids"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                            <Link href={"/account/bid"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
                                 <BanknotesIcon className="w-5 h-5" />
                                 <span>Moje cenové ponuky</span>
                             </Link>
