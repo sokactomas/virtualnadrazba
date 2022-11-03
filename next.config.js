@@ -3,12 +3,10 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    unoptimized: true,
     domains: ['s.unitedclassifieds.sk', 'img.unitedclassifieds.sk'],
   },
   serverRuntimeConfig: {
     // Will only be available on the server side
-    PLATFORMCORE_PLATFORMCORECONFIG_APPNAME: process.env.PLATFORMCORE_PLATFORMCORECONFIG_APPNAME
   },
   publicRuntimeConfig: {
     // Will be available on both server and client
