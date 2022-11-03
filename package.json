@@ -38,7 +38,7 @@
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.1",
     "moment": "^2.29.4",
-    "next": "^12.2.5",
+    "next": "^12.3.2",
     "next-auth": "^4.15.0",
     "node-fetch": "^3.2.10",
     "npm-check-updates": "^16.3.16",
