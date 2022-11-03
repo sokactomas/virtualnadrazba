@@ -79,21 +79,25 @@ const Detail: NextPageWithLayout = () => {
     }
 
     const getInvalidPhotos = () => {
-        const photos = [
+        const photos: string[] = [
             'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
             'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
         ];
 
-        photos.forEach(image => {
-            getPhotoData(image)
+        let items: IPhotoDamage[] = [];
+
+        photos.forEach(async (image) => {
+            await getPhotoData(image)
                 .then(response => response.json())
                 .then(response => {
                     let damages:IDamage[] = [];
-                    response.output.elements.forEach((res: { score: number; bbox: any; }) => {
+                    response.output.elements.forEach((res: { score: number; bbox: any; damage_category: string; damage_location: string; }) => {
                         if (res.score >= 0.4) {
                             damages.push({
                                 score: res.score,
-                                box: res.bbox
+                                box: res.bbox,
+                                damage_category: res.damage_category,
+                                damage_location: res.damage_location
                             });
                         }
                     });
@@ -110,7 +114,7 @@ const Detail: NextPageWithLayout = () => {
                             return 0;
                         });
 
-                        invalidPhotos.push({
+                        items.push({
                             photo: image,
                             result: {
                                 photo: response.output_url,
@@ -119,11 +123,11 @@ const Detail: NextPageWithLayout = () => {
                                 damages
                             }
                         });
-
-                        setInvalidPhotos(invalidPhotos);
                     }
                 })
         });
+
+        setInvalidPhotos(items);
     }
 
     const numberFormat = new Intl.NumberFormat('sk-SK', { maximumSignificantDigits: 3 });
@@ -143,33 +147,41 @@ const Detail: NextPageWithLayout = () => {
                             <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
                                 {recordQuery?.data?.pltRecord?.images.map((image, index) => {
                                     return (
-                                        <img key={index} src={image.previewUrls.orig} alt=""/>
+                                        <img key={index} src={image.previewUrls.orig} alt="" className="max-h-[9.6rem] mx-auto"/>
                                     );
                                 })
                                 }
-                                <img src="https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png" alt="" />
-                                <img src="https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png" alt="" />
+                                <img src="https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png" alt="" className="max-h-[9.6rem] mx-auto" />
+                                <img src="https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png" alt="" className="max-h-[9.6rem] mx-auto" />
                             </div>
                         }
                     </div>
                 }
 
-                <hr className="mt-8" />
-                <div className="mt-8">
-                {[
-                    'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
-                    'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
-                ].map((src, i) => {
-                    return (
-                        <div key={i} className="flex">
-                            <img src={src} alt="" />
-                            <div>
-                                info
-                            </div>
+                {invalidPhotos.length > 0 && (
+                    <>
+                        <hr className="mt-8" />
+                        <div className="mt-8">
+                        {invalidPhotos.map((image, i) => {
+                            return (
+                                <div key={i} className="mt-4 flex flex-row gap-4">
+                                    <div className="w-[13.33rem] max-h-40">
+                                        <img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" />
+                                    </div>
+                                    <div>
+                                        {image.result.damages.map((damage, j) => {
+                                            return (
+                                                <div key={j}>{damage.damage_location}: {damage.damage_category}</div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })}
                         </div>
-                    );
-                })};
-                </div>
+                    </>
+                    )
+                }
 
                 <hr className="mt-8" />
                 <div className="mt-8">
@@ -336,6 +348,35 @@ const Detail: NextPageWithLayout = () => {
                             <div>Hodnotili prechádzajúci zákazníci.</div>
                         </div>
                     </div>
+                </div>
+
+                <div className={"mt-8 rounded-md border p-5 md:block" + (!show ? " hidden" : "")}>
+                    <ul className="grid grid-cols-2">
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">prihlásime auto za vás</span>
+                        </li>
+                        <li className="text-red-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span className="pl-1">zabezpečíme dovoz auta</span>
+                        </li>
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">financovanie ukončené</span>
+                        </li>
+                        <li className="text-gray-500 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            </svg>
+                            <span className="pl-1">servisované v autorizovanom servise</span>
+                        </li>
+                    </ul>
                 </div>
 
                 <div className="mt-4 flex flex-row justify-center cursor-pointer select-none md:hidden" onClick={toggleShow}>
