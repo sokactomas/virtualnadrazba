@@ -8,6 +8,9 @@ export const Offer: FC = () => {
     const { data: session } = useSession();
     const offerQuery = trpc.offer.list.useQuery({
         userId: session?.user?.platformId || ''
+    },{
+        refetchOnMount: false,
+        refetchOnWindowFocus: false
     });
 
     const renderRecords = () => {

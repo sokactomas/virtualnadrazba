@@ -20,6 +20,7 @@ type BidPriceProps = {
 export const BidPrice: FC<BidPriceProps> = ({ record }) => {
     const [price, setPrice] = useState<string>('');
     const { data: session } = useSession();
+    const utils = trpc.useContext();
 
     const [currentPrice, setCurrentPrice] = useState<number>();
 
@@ -36,7 +37,9 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
 
     trpc.record.onUpdate.useSubscription(undefined, {
         onData(r) {
-            setCurrentPrice(r?.bidPrice)
+            setCurrentPrice(r?.bidPrice);
+            utils.record.list.refetch();
+            utils.record.get.refetch();
         }
     })
 
@@ -132,7 +135,7 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
                 { renderPrice() }
             </div>
             <div className="text-sm">
-                Najmenšia suma, ktorá sa da prihodiť je <span className="font-semibold">100 €</span>
+                Najmenšia čiastka, ktorá sa da prihodiť je <span className="font-semibold">100 €</span>
             </div>
             <form className="space-y-4" onSubmit={handleOnSubmit}>
                 <div className="col-span-3 sm:col-span-2">

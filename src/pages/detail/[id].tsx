@@ -22,6 +22,9 @@ const Detail: NextPageWithLayout = () => {
 
     const recordQuery = trpc.record.get.useQuery({
         id: Number(router?.query?.id)
+    }, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false
     })
 
     if (recordQuery.isLoading) {
@@ -137,9 +140,9 @@ const Detail: NextPageWithLayout = () => {
                         }
                         {recordQuery?.data?.pltRecord[0].images.length > 0 &&
                             <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
-                                {recordQuery?.data?.pltRecord[0].images.map(image => {
+                                {recordQuery?.data?.pltRecord[0].images.map((image, index) => {
                                     return (
-                                        <img src={image.previewUrls.orig} alt=""/>
+                                        <img key={index} src={image.previewUrls.orig} alt=""/>
                                     );
                                 })
                                 }
@@ -219,9 +222,9 @@ const Detail: NextPageWithLayout = () => {
                             <h4 className="mt-0 mb-3 text-lg font-bold">Bezpečnosť:</h4>
                             <ul className="p-options">
                                 {
-                                    recordQuery?.data?.pltRecord[0].carEquipmentValue.split(',').map(item => {
+                                    recordQuery?.data?.pltRecord[0].carEquipmentValue.split(',').map((item, index) => {
                                         return (
-                                            <li>{item.trim()}</li>
+                                            <li key={index}>{item.trim()}</li>
                                         );
                                     })
                                 }
@@ -249,9 +252,9 @@ const Detail: NextPageWithLayout = () => {
                             <h4 className="mt-0 mb-3 text-lg font-bold">Ostatné:</h4>
                             <ul className="p-options">
                                 {
-                                    recordQuery?.data?.pltRecord[0].otherEquipment.split(',').map(item => {
+                                    recordQuery?.data?.pltRecord[0].otherEquipment.split(',').map((item, index) => {
                                         return (
-                                            <li>{item.trim()}</li>
+                                            <li key={index}>{item.trim()}</li>
                                         );
                                     })
                                 }

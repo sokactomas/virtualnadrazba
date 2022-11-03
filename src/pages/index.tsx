@@ -2,10 +2,11 @@ import { Fragment, useState } from "react";
 import { Record } from "components/Record";
 import { NextPageWithLayout } from "pages/_app";
 import { trpc } from "utils/trpc";
+import { RocketLaunchIcon } from "@heroicons/react/24/outline";
 
 const Homepage: NextPageWithLayout = () => {
     const recordQuery = trpc.record.list.useInfiniteQuery({
-        limit: 2,
+        limit: 10,
     }, {
         getNextPageParam(lastPage: any) {
             return lastPage.nextCursor;
@@ -36,8 +37,9 @@ const Homepage: NextPageWithLayout = () => {
 
     return (
         <div className="w-full lg:w-4/5 py-2 px-5 lg:p-0 space-y-4">
-            <div>
-                Random number right here: { number }
+            <div className="flex items-center space-x-1">
+                <RocketLaunchIcon className="w-4 h-4" />
+                <span>Socket testing: { number }</span>
             </div>
             <div className="flex flex-col w-full space-y-2">
             { renderRecords() }
