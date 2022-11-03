@@ -1,19 +1,26 @@
 import { NextPageWithLayout } from "pages/_app";
-import { useState, useRef } from "react";
+import { useState, BaseSyntheticEvent } from "react";
 import {IDamage, IPhotoDamage} from "common/interfaces/detail/damage.interface";
 import {trpc} from "utils/trpc";
 import {useRouter} from "next/router";
 import { BidPrice } from "components/detail/BidPrice";
-import { ShieldCheckIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, CheckCircleIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const Detail: NextPageWithLayout = () => {
     const [show, setShow] = useState<boolean>(false);
-    const [invalidPhotos, setInvalidPhotos] = useState<IPhotoDamage[]>([]);
     const [damageCheck, setDamageCheck] = useState<number>(0);
     const [stkValid, setStkValid] = useState<number>(0);
     const [ekValid, setEkValid] = useState<number>(0);
     const [stk, setStk] = useState<Date>();
     const [ek, setEk] = useState<Date>();
+
+    const invalidPhotos: string[] = [
+        'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
+        'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
+    ];
+
+    const rapidApiMutation = trpc.rapidApi.vehicleDamage.useMutation();
 
     const toggleShow = () => {
         setShow(!show);
@@ -79,120 +86,148 @@ const Detail: NextPageWithLayout = () => {
         });
     }
 
-    const getInvalidPhotos = () => {
-        const photos: string[] = [
-            'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
-            'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
-        ];
-
-        let items: IPhotoDamage[] = [];
-        setDamageCheck(1);
-
-        photos.forEach(async (image) => {
-            await getPhotoData(image)
-                .then(response => response.json())
-                .then(response => {
-                    let damages:IDamage[] = [];
-                    response.output.elements.forEach((res: { score: number; bbox: any; damage_category: string; damage_location: string; }) => {
-                        if (res.score >= 0.4) {
-                            damages.push({
-                                score: res.score,
-                                box: res.bbox,
-                                damage_category: res.damage_category,
-                                damage_location: res.damage_location
-                            });
-                        }
-                    });
-
-                    if (damages.length > 0) {
-                        damages.sort((a: IDamage, b: IDamage): number => {
-                            if (a.score > b.score) {
-                                return -1;
-                            }
-                            if (a.score < b.score) {
-                                return 1;
-                            }
-
-                            return 0;
-                        });
-
-                        items.push({
-                            photo: image,
-                            result: {
-                                photo: response.output_url,
-                                urlExpiry: response.url_expiry,
-                                isDamaged: true,
-                                damages
-                            }
-                        });
-                    }
-                })
+    const handleVerifyVehicle = async (e: BaseSyntheticEvent) => {
+        e.preventDefault();
+        await rapidApiMutation.mutateAsync({
+            images: invalidPhotos
         });
-
-        if (items.length > 0) {
-            setDamageCheck(2);
-        } else {
-            setDamageCheck(3);
-        }
-
-        setInvalidPhotos(items);
     }
 
     const numberFormat = new Intl.NumberFormat('sk-SK', { maximumSignificantDigits: 3 });
 
+    const renderImage = () => {
+        if (recordQuery?.data?.pltRecord?.image) {
+            return (
+                <div className="w-full h-[542px] relative flex items-center justify-center rounded-xl overflow-hidden">
+                    <Image src={recordQuery?.data?.pltRecord?.image.previewUrls.orig} alt="" layout='fill' objectFit='cover' />
+                </div>
+            )
+        }
+
+        return (
+            <div className="bg-gray-200 min-w-[723px] w-full h-[542px] relative flex items-center justify-center" />
+        )
+    }
+
+    const renderThumbs = () => {
+        if (recordQuery?.data?.pltRecord?.images) {
+            return recordQuery?.data?.pltRecord?.images?.map((image) => (
+                <div key={image?.id} className="w-[104px] h-[80px] relative mr-0.5 mb-0.5 rounded-md overflow-auto">
+                    <Image src={image?.previewUrls?.thumbnail} alt={recordQuery?.data?.pltRecord?.title || ''} layout='fill' objectFit='cover' />
+                </div>
+            ))
+        }
+
+        return null;
+    }
+
+    const renderInvalidPhotos = () => {
+        return invalidPhotos.map((url, index) => (
+            <div key={index} className="w-[104px] h-[80px] relative mr-0.5 mb-0.5 rounded-md overflow-auto">
+                <Image src={url} alt={recordQuery?.data?.pltRecord?.title || ''} layout='fill' objectFit='cover' />
+            </div>
+        ))
+    }
+
+    const renderVehicleverificationButton = () => {
+        if (rapidApiMutation.isSuccess && rapidApiMutation?.data?.length > 0) {
+            return (
+                <div className="flex items-center justify-center border border-green-300 space-x-2 bg-green-100 text-green-700 py-1.5 px-4 rounded-md">
+                    <CheckCircleIcon className="w-6 h-6" />
+                    <span>Úspešne overené</span>
+                </div>
+            )
+        }
+
+        if (rapidApiMutation.isLoading) {
+            return (
+                <div className="flex items-center justify-center border border-sky-300 space-x-2 bg-sky-100 text-sky-700 py-1.5 px-4 rounded-md">
+                    <ArrowPathIcon className="w-6 h-6 animate-spin" />
+                    <span>Overuje...</span>
+                </div>
+            )
+        }
+
+        return (
+            <button type="button" className="flex items-center justify-center border border-sky-300 font-semibold space-x-2 bg-sky-100 hover:bg-sky-200 text-sky-700 py-1.5 px-4 rounded-md" onClick={handleVerifyVehicle}>
+                Overiť stav
+            </button>
+        )
+    }
+
+    const renderVehicleverification = () => {
+        return (
+            <div className="rounded border py-2 px-3 flex flex-col justify-evenly space-y-2">
+                <div className="font-bold">Overenie poškodenia</div>
+                <div className="text-sm">Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
+                { renderVehicleverificationButton() }
+            </div>
+        )
+    }
+
+    const renderVehicleHistory = () => {
+        return (
+            <div className="rounded border py-2 px-3 flex flex-col justify-evenly space-y-2">
+                <div className="font-bold">História vozidla</div>
+                <div className="text-sm">Skontrolujte históriu, počet kilometrov, výbavu...</div>
+                <a rel="noreferrer" href={'https://www.carvertical.com/sk/predbezna-kontrola?a=uc&b=82735778&chan=abeudskt3&vin=' + (recordQuery?.data?.pltRecord?.vin)} target="_blank" className="flex items-center justify-center border border-sky-300 font-semibold space-x-2 bg-sky-100 hover:bg-sky-200 text-sky-700 py-1.5 px-4 rounded-md">
+                    Overiť vozidlo
+                </a>
+            </div>
+        )
+    }
+
+    const renderVehicleDamageElement = (vehicleDamageElement: any) => {
+        return vehicleDamageElement?.map((element: any) => (
+            <div key={element?.damage_id} className='text-sm flex items-center space-x-2'>
+                <div>Kategória: {element?.damage_category}</div>
+                <div>Miesto: {element?.damage_location}</div>
+                <div>Skóre: <span className="font-bold">{Math.floor(element?.score * 100)}</span> / 100</div>
+            </div>
+        ))
+    }
+
+    const renderVehicleDamage = () => {
+        return rapidApiMutation?.data?.map((vehicleDamage: any) => (
+            <div key={vehicleDamage.job_id} className='flex space-x-2'>
+                <div className="shrink-0 bg-gray-200 w-[276px] h-[210px] relative rounded-md overflow-auto">
+                    <Image src={vehicleDamage?.output_url} alt={vehicleDamage?.job_id} layout='fill' objectFit='cover' />
+                </div>
+                <div className="flex flex-col space-y-1">
+                    {renderVehicleDamageElement(vehicleDamage?.output?.elements)}
+                </div>
+            </div>
+        ))
+    }
+
+    const renderVehicleDamageSection = () => {
+        if (rapidApiMutation.isSuccess && rapidApiMutation?.data?.length > 0) {
+            return (
+                <div className="space-y-2 py-4">
+                    <div className="text-xl font-semibold">Poškodenie vozidla</div>
+                    { renderVehicleDamage() }
+                </div>
+            )
+        }
+
+        return null;
+    }
+
     return (
         <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
-            <article className="p-content">
-                <h1 className="mt-0 mb-6 text-2xl">{ recordQuery?.data?.record.title }</h1>
-                {(recordQuery && (recordQuery?.data?.pltRecord?.image || (recordQuery?.data?.pltRecord?.images?.length || 0) > 0)) &&
-                    <div className="rounded-md overflow-hidden">
-                        { recordQuery?.data?.pltRecord?.image &&
-                            <div className="">
-                                <img src={ recordQuery?.data?.pltRecord?.image.previewUrls.orig } alt=""/>
-                            </div>
-                        }
-                        {(recordQuery?.data?.pltRecord?.images?.length || 0) > 0 &&
-                            <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
-                                {recordQuery?.data?.pltRecord?.images.map((image, index) => {
-                                    return (
-                                        <img key={index} src={image.previewUrls.orig} alt="" className="max-h-[9.6rem] mx-auto"/>
-                                    );
-                                })
-                                }
-                                <img src="https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png" alt="" className="max-h-[9.6rem] mx-auto" />
-                                <img src="https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png" alt="" className="max-h-[9.6rem] mx-auto" />
-                            </div>
-                        }
-                    </div>
-                }
-
-                {invalidPhotos.length > 0 && (
-                    <>
-                        <hr className="mt-8" />
-                        <div className="mt-8">
-                        {invalidPhotos.map((image, i) => {
-                            return (
-                                <div key={i} className="mt-4 flex flex-row gap-4">
-                                    <div className="w-[13.33rem] max-h-40">
-                                        <a href={image.result.photo} target="_blank"><img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" /></a>
-                                    </div>
-                                    <div>
-                                        {image.result.damages.map((damage, j) => {
-                                            return (
-                                                <div key={j}>{damage.damage_location}: {damage.damage_category}</div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            );
-                        })}
+            <article className="p-content space-y-4">
+                <div>
+                    <h1 className="mt-0 mb-6 text-2xl font-bold">{ recordQuery?.data?.record.title }</h1>
+                    <div className="space-y-4">
+                        { renderImage() }
+                        <div className="flex flex-wrap">
+                            { renderThumbs() }
+                            { renderInvalidPhotos() }
                         </div>
-                    </>
-                    )
-                }
-
-                <hr className="mt-8" />
-                <div className="mt-8">
+                    </div>
+                    {renderVehicleDamageSection() }
+                </div>
+                <div className="border-t border-gray-200 pt-4">
                     <h3 className="mt-0 mb-3 text-2xl">Základné údaje</h3>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         <li className="p-item">
@@ -319,19 +354,15 @@ const Detail: NextPageWithLayout = () => {
                         <div>Vozidlo bolo nezávisle overené odborníkom z autobazar.eu</div>
                     </div>
                 </div>
-                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
-                        <div>
-                            <div className="font-bold mb-1">História vozidla</div>
-                            <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
-                            <a rel="noreferrer" href={'https://www.carvertical.com/sk/predbezna-kontrola?a=uc&b=82735778&chan=abeudskt3&vin=' + (recordQuery?.data?.pltRecord?.vin) } target="_blank" className="block mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700 text-center">Overiť vozidlo</a>
-                        </div>
-                    </div>
+                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 space-y-2 md:space-y-0 md:grid" + (!show ? " hidden" : "")}>
+                    { renderVehicleHistory() }
                     <div className={"rounded border py-2 px-3" + (stkValid === 1 && ekValid === 1 ? ' border-green-600 text-green-900 bg-green-100' : ' border-orange-600 text-orange-900 bg-orange-100')}>
                         <div>
                             <div className="font-bold mb-1">Overenie STK a EK</div>
                             <div>Overenie STK a EK z online zdrojov.</div>
-                            {(stkValid !== 1 || ekValid !== 1) && <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={setStkEk}>Overiť STK / EK</button>}
+                            {(stkValid !== 1 || ekValid !== 1) && <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={setStkEk}>
+                                Overiť STK / EK
+                            </button>}
                             {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk && stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
                             {stkValid === 2 && <div className="mt-2 text-red-900">Platnosť STK: neplatné</div>}
                             {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek && ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
@@ -339,69 +370,55 @@ const Detail: NextPageWithLayout = () => {
                         </div>
                     </div>
                 </div>
-                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                    <div className={
-                        "rounded border py-2 px-3"
-                        + (damageCheck === 0 ? ' border-orange-600 text-orange-900 bg-orange-100 ' : '')
-                        + (damageCheck === 1 ? ' border-gray-600 text-gray-900 bg-gray-100 ' : '')
-                        + (damageCheck === 2 ? ' border-red-600 text-red-900 bg-red-100 ' : '')
-                        + (damageCheck === 3 ? ' border-green-600 text-green-900 bg-green-100 ' : '')
-                    }>
-                        <div>
-                            <div className="font-bold mb-1">Overenie poškodenia</div>
-                            <div>Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
-                            {damageCheck === 0 && (
-                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
-                            )}
-                        </div>
-                    </div>
-                    <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
+                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 space-y-2 md:space-y-0 md:grid" + (!show ? " hidden" : "")}>
+                    { renderVehicleverification() }
+                    <div className="rounded border py-2 px-3 flex flex-col justify-evenly border-green-300 text-green-900 bg-green-100">
                         <div className="h-12 text-center">
                             <span className="text-3xl">9.5 <small className="text-base">/ 10</small></span>
                         </div>
                         <div>
                             <div className="font-bold mb-1">Hodnotenie zákazníkov</div>
-                            <div>Hodnotili prechádzajúci zákazníci.</div>
+                            <div className="text-sm">Hodnotili prechádzajúci zákazníci.</div>
                         </div>
                     </div>
                 </div>
 
-                <div className={"mt-8 rounded-md border py-2 px-3 md:block" + (!show ? " hidden" : "")}>
-                    <div className="font-bold">Základné údaje:</div>
-                    <ul className="grid grid-cols-2">
-                        <li className="mt-2 text-green-800">
+                <div className={"mt-8 space-y-4 rounded-md border py-2 px-3 md:block" + (!show ? " hidden" : "")}>
+                    <div className="font-bold text-xl">Základné údaje:</div>
+                    <div className="flex flex-col space-y-1">
+                        <div className="text-green-800 flex items-center justify-between">
                             <span className="block font-bold">Počet majiteľov/držiteľov vozidla v SR:</span>
                             <span className="p-value">3 / 3</span>
-                        </li>
-                        <li className="mt-2 text-green-800">
+                        </div>
+                        <div className="text-green-800 flex items-center justify-between">
                             <span className="block font-bold">Pátranie:</span>
                             <span>nie</span>
-                        </li>
-                        <li className="mt-2 text-red-800">
+                        </div>
+                        <div className="text-red-800 flex items-center justify-between">
                             <span className="block font-bold">Kontrola originality:</span>
                             <span>nie</span>
-                        </li>
-                        <li className="mt-2 text-green-800">
+                        </div>
+                        <div className="text-red-800 flex items-center justify-between">
                             <span className="block font-bold">Leasing vozidla:</span>
                             <span>nie</span>
-                        </li>
-                        <li className="mt-2 text-green-800">
+                        </div>
+                        <div className="text-red-800 flex items-center justify-between">
                             <span className="block font-bold">Poškodenie vozidla:</span>
                             <span>nie</span>
-                        </li>
-                        <li className="mt-2 text-green-800">
+                        </div>
+                        <div className="text-green-800 flex items-center justify-between">
                             <span className="block font-bold">Servisované v autorizovanom servise:</span>
                             <span>áno</span>
-                        </li>
-                        <li className="mt-2 text-red-800">
+                        </div>
+                        <div className="text-red-800 flex items-center justify-between">
                             <span className="block font-bold">Prihlásime auto za vás:</span>
                             <span>nie</span>
-                        </li>
-                        <li className="mt-2 text-red-800">
+                        </div>
+                        <div className="text-red-800 flex items-center justify-between">
                             <span className="block font-bold">Zabezpečíme dovoz auta k vám domov:</span>
                             <span>nie</span>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="mt-4 flex flex-row justify-center cursor-pointer select-none md:hidden" onClick={toggleShow}>

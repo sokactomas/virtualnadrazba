@@ -3,8 +3,15 @@ import { Record } from "components/Record";
 import { NextPageWithLayout } from "pages/_app";
 import { trpc } from "utils/trpc";
 import { RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { Login } from "components/Login";
 
 const Homepage: NextPageWithLayout = () => {
+    const { data: session, status } = useSession();
+    const [number, setNumber] = useState<number>();
+    const [isOpen, setIsOpen] = useState(false);
+
     const recordQuery = trpc.record.list.useInfiniteQuery({
         limit: 10,
     }, {
@@ -12,8 +19,6 @@ const Homepage: NextPageWithLayout = () => {
             return lastPage.nextCursor;
         },
     });
-
-    const [number, setNumber] = useState<number>();
 
     trpc.randomNumber.useSubscription(undefined, {
         onData(n) {
@@ -33,6 +38,24 @@ const Homepage: NextPageWithLayout = () => {
         }
 
         return null
+    }
+
+    if (status === "unauthenticated") {
+        return (
+            <div className="flex items-center justify-center">
+                <div>
+                    <div className="w-[970px] h-[308px] relative">
+                        <Image src={'/homepage.png'} alt="homepage" layout='fill' objectFit='cover' />
+                    </div>
+                    <div className="flex justify-center">
+                        <button className="button-primary" onClick={() => setIsOpen(true)}>
+                            prihlásiť sa
+                        </button>
+                        <Login isOpen={isOpen} setIsOpen={setIsOpen} />
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (

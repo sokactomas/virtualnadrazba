@@ -131,7 +131,7 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
     }
 
     return (
-        <div className="rounded-md border p-5 space-y-4 shadow-md">
+        <div className="rounded-md border p-5 space-y-4">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col items-start">
                     <span>Aukcia končí za</span>

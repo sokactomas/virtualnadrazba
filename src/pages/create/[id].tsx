@@ -28,7 +28,7 @@ const CreateRecord: NextPageWithLayout = () => {
     
     const addRecord = trpc.record.create.useMutation({
         onSuccess() {
-            router.push("/account", undefined, { shallow: true })
+            router.push("/account/auction", undefined, { shallow: true })
         }
     });
 
