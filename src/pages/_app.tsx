@@ -1,4 +1,4 @@
-import '../../public/globals.css'
+import '../styles/globals.css'
 import { NextPage } from "next";
 import type { AppProps, AppType } from "next/app";
 import { ReactElement, ReactNode } from "react";
