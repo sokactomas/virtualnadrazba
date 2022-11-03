@@ -41,3 +41,7 @@ next-env.d.ts
 
 /prisma/_sqlite
 /prisma/migrations
+
+*.db
+*.db-journal
+package-lock.json
