@@ -170,6 +170,16 @@ export const Header:FC = () => {
                                                     <UserIcon className="w-4 h-4" />
                                                     <span>johndoe</span>
                                                 </button>
+                                                <button className="hover:bg-sky-100 flex items-center  justify-center space-x-2 bg-sky-50 rounded-md text-sky-800 border border-sky-300 py-1 px-4 flex-1" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    signInAs({
+                                                        email: 'groot@gmail.com',
+                                                        password: 'superheslo',
+                                                    })
+                                                }}>
+                                                    <UserIcon className="w-4 h-4" />
+                                                    <span>Groot</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </Dialog.Panel>
