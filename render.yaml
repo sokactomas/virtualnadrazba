@@ -3,7 +3,7 @@ services:
     name: virtualnadrazba
     env: node
     plan: free
-    buildCommand: pnpm install --legacy-peer-dep && pnpm build
+    buildCommand: pnpm install && pnpm build
     startCommand: pnpm start
     healthCheckPath: /api/trpc/healthcheck
     envVars:
