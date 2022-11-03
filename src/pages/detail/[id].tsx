@@ -166,7 +166,7 @@ const Detail: NextPageWithLayout = () => {
                             return (
                                 <div key={i} className="mt-4 flex flex-row gap-4">
                                     <div className="w-[13.33rem] max-h-40">
-                                        <img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" />
+                                        <a href={image.result.photo} target="_blank"><img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" /></a>
                                     </div>
                                     <div>
                                         {image.result.damages.map((damage, j) => {
