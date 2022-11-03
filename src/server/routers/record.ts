@@ -184,6 +184,21 @@ export const recordRouter = router({
 
             ee.emit('update', updatedRecord);
 
+            const storedBid = await prisma.bid.findFirst({
+                where: {
+                    userId: input?.userId,
+                    recordId: input?.recordId,
+                }
+            })
+
+            if (storedBid) {
+                await prisma.bid.delete({
+                    where: {
+                        id: storedBid.id
+                    }
+                })
+            }
+
             // emit updated pride
             const bid = await prisma.bid.create({
                 data: {
