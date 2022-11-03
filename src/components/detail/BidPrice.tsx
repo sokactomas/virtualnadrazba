@@ -20,6 +20,7 @@ type BidPriceProps = {
 export const BidPrice: FC<BidPriceProps> = ({ record }) => {
     const [price, setPrice] = useState<string>('');
     const { data: session } = useSession();
+    const utils = trpc.useContext();
 
     const [currentPrice, setCurrentPrice] = useState<number>();
 
@@ -36,7 +37,9 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
 
     trpc.record.onUpdate.useSubscription(undefined, {
         onData(r) {
-            setCurrentPrice(r?.bidPrice)
+            setCurrentPrice(r?.bidPrice);
+            utils.record.list.refetch();
+            utils.record.get.refetch();
         }
     })
 

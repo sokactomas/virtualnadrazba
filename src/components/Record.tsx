@@ -90,6 +90,23 @@ export const Record: FC<RecordProps> = ({ record }) => {
         );
     }
 
+    const renderBidPrice = () => {
+        if (record?.type === 0 && record?.bidPrice > 0) {
+            return (
+                <div className="flex flex-col">
+                    <span className="text-sm">Min. ponúknuta cena:</span>
+                    <div className="flex items-center space-x-2">
+                        <TagIcon className="w-6 h-6 text-green-600" />
+                        <span className='text-2xl font-bold'>
+                            {record.bidPrice.toLocaleString()} €
+                        </span>
+                    </div>
+                </div>
+            )
+        }
+        return null;
+    }
+
     return (
         <div className='flex flex-col w-full bg-white border-2 border-gray-200'>
             <div className="flex p-4">
@@ -106,14 +123,17 @@ export const Record: FC<RecordProps> = ({ record }) => {
                             <span className="bg-gray-600 w-1 h-1 rounded-full block" />
                             { renderCreatedAt() }
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-sm">Vyvolavacia cena:</span> 
-                            <div className="flex items-center space-x-2">
-                                <TagIcon className="w-6 h-6 text-red-600" />
-                                <span className='text-2xl font-bold'>
-                                    {record.price.toLocaleString()} €
-                                </span>
+                        <div className="flex items-center space-x-4">
+                            <div className="flex flex-col">
+                                <span className="text-sm">Vyvolavacia cena:</span>
+                                <div className="flex items-center space-x-2">
+                                    <TagIcon className="w-6 h-6 text-red-600" />
+                                    <span className='text-2xl font-bold'>
+                                        {record.price.toLocaleString()} €
+                                    </span>
+                                </div>
                             </div>
+                            { renderBidPrice() }
                         </div>
                     </div>
                     <div className="flex items-center space-x-2 w-full justify-between">

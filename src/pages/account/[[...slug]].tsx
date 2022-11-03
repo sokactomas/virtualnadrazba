@@ -1,4 +1,4 @@
-import { ArchiveBoxIcon, BanknotesIcon, PlusIcon, QueueListIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxIcon, BanknotesIcon, GlobeEuropeAfricaIcon, PlusIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Auction } from "components/account/Auction";
@@ -11,7 +11,8 @@ const Account: NextPageWithLayout = () => {
     const { slug } = router?.query;
 
     const renderContent = () => {
-        if (slug && slug[0] === 'auction') {
+        const content = slug ? slug[0] : undefined;
+        if (content === 'auction') {
             return <Auction />
         }
 
@@ -53,9 +54,23 @@ const Account: NextPageWithLayout = () => {
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/account/auction"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                            <Link href={"/account/bids"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
                                 <BanknotesIcon className="w-5 h-5" />
                                 <span>Moje cenové ponuky</span>
+                            </Link>
+                        </li>
+                        <li className="group">
+                            <Link href={"/"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300 justify-between">
+                                <span className="flex space-x-4 items-center">
+                                    <GlobeEuropeAfricaIcon className="w-5 h-5" />
+                                    <span>Dražba</span>
+                                </span>
+                                <span className="text-sm text-white bg-red-600 px-2 py-0.5 rounded-full flex items-center space-x-2">
+                                    <span className="h-2 w-2 bg-white block rounded-full relative">
+                                        <span className="h-2 w-2 bg-white block rounded-full absolute top-0 bottom-0 animate-ping"></span>
+                                    </span>
+                                    <span>živé</span>
+                                </span>
                             </Link>
                         </li>
                         <li className="group">
