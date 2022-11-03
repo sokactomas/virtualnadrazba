@@ -9,6 +9,10 @@ import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 const Detail: NextPageWithLayout = () => {
     const [show, setShow] = useState<boolean>(false);
     const [invalidPhotos, setInvalidPhotos] = useState<IPhotoDamage[]>([]);
+    const [stkValid, setStkValid] = useState<number>(0);
+    const [ekValid, setEkValid] = useState<number>(0);
+    const [stk, setStk] = useState<Date>();
+    const [ek, setEk] = useState<Date>();
 
     const toggleShow = () => {
         setShow(!show);
@@ -29,7 +33,37 @@ const Detail: NextPageWithLayout = () => {
         );
     }
 
-    const getPhotoData = (image:string): Promise<any> => {
+    const setStkEk = () => {
+        // fetch('https://www.autobazar.work/ajax/json_iris_gettechnickeudajevozidla.php?ecv_vozidla=' + (recordQuery?.data?.pltRecord[0].licensePlate ? recordQuery?.data?.pltRecord[0].licensePlate : 'HE006CN'), {
+        //     method: 'GET'
+        // })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         console.log(response)
+        //     });
+
+        const response = JSON.parse('{"orig":{"GetTechnickeUdajeVozidloResult":{"Msg":{"Description":"OK","ErrorId":"OK"},"Vozidlo":{"DatumPrvejEvidencie":"2015-11-05T00:00:00","DatumPrvejEvidencieSK":"2020-10-23T00:00:00","Farba":"\u0160ed\u00e1 metal\u00edza","Karoseria":"AB hatchback 5dv.","Model":"A5 SPORTBACK","Palivo":"NAFTA","PalivoSpotreba":null,"PlatnostEK":"2024-10-24T00:00:00","PlatnostTK":"2024-10-24T00:00:00","PocetMiestSedenie":null,"Prevodovka":"automatick\u00e1","PrevodovkaPocetStupnov":"7","RokVyroby":"0","VIN":"WAUZZZ8T1GA014569","VykonMotora":"180","ZdvihovyObjem":"2967","Znacka":"AUDI"}}},"DatumPrvejEvidencie":"2015-11-05T00:00:00","DatumPrvejEvidencieSK":"2020-10-23T00:00:00","PalivoSpotreba":null,"PlatnostEK":"2024-10-24T00:00:00","PlatnostTK":"2024-10-24T00:00:00","PocetMiestSedenie":null,"PrevodovkaPocetStupnov":"7","VIN":"WAUZZZ8T1GA014569","VykonMotora":"180","ZdvihovyObjem":"2967","IdLog":135961,"Znacka":"5","Model":"3770","Karoseria":16,"Farba":"808080","Palivo":1,"RokVyroby":"2015","Prevodovka":7,"PocetParametrov":30,"KaroseriaEurotax":13}');
+
+        const stk = new Date(response.PlatnostTK);
+        setStk(stk);
+
+        const ek = new Date(response.PlatnostEK);
+        setEk(ek);
+
+        if (stk > new Date()) {
+            setStkValid(1);
+        } else {
+            setStkValid(2);
+        }
+
+        if (ek > new Date()) {
+            setEkValid(1);
+        } else {
+            setEkValid(2);
+        }
+    };
+
+    const getPhotoData = (image: string): Promise<any> => {
         return fetch('https://vehicle-damage-assessment.p.rapidapi.com/run', {
             method: 'POST',
             headers: {
@@ -46,7 +80,6 @@ const Detail: NextPageWithLayout = () => {
 
     const getInvalidPhotos = () => {
         const photos = [
-            'https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg',
             'https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg'
         ];
 
@@ -250,14 +283,18 @@ const Detail: NextPageWithLayout = () => {
                         <div>
                             <div className="font-bold mb-1">História vozidla</div>
                             <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
-                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť vozidlo</button>
+                            <a href={'https://www.carvertical.com/sk/predbezna-kontrola?a=uc&b=82735778&chan=abeudskt3&vin=' + (recordQuery?.data?.pltRecord[0].vin) } target="_blank" className="block mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700 text-center">Overiť vozidlo</a>
                         </div>
                     </div>
-                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                    <div className={"rounded border py-2 px-3" + (stkValid === 1 && ekValid === 1 ? ' border-green-600 text-green-900 bg-green-100' : ' border-orange-600 text-orange-900 bg-orange-100')}>
                         <div>
                             <div className="font-bold mb-1">Overenie STK a EK</div>
                             <div>Overenie STK a EK z online zdrojov.</div>
-                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť STK / EK</button>
+                            {(stkValid !== 1 || ekValid !== 1) && <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={setStkEk}>Overiť STK / EK</button>}
+                            {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
+                            {stkValid === 2 && <div className="mt-2 text-red-900">Platnosť STK: neplatné</div>}
+                            {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
+                            {ekValid === 2 && <div className="mt-2 text-red-900">Platnosť EK: neplatné</div>}
                         </div>
                     </div>
                 </div>
