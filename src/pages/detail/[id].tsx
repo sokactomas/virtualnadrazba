@@ -1,7 +1,7 @@
-import { NextPageWithLayout } from "~/pages/_app";
+import { NextPageWithLayout } from "pages/_app";
 import { useState, useRef } from "react";
-import {IDamage, IPhotoDamage} from "~/common/interfaces/detail/damage.interface";
-import {trpc} from "~/utils/trpc";
+import {IDamage, IPhotoDamage} from "common/interfaces/detail/damage.interface";
+import {trpc} from "utils/trpc";
 import {useRouter} from "next/router";
 
 const Detail: NextPageWithLayout = () => {

@@ -1,5 +1,5 @@
 import { publicProcedure, router } from "../trpc";
-import { prisma } from '~/server/prisma';
+import { prisma } from 'server/prisma';
 import moment from "moment";
 import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
 import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
