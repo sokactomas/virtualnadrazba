@@ -18,6 +18,9 @@ const Detail: NextPageWithLayout = () => {
 
     const recordQuery = trpc.record.get.useQuery({
         id: Number(router?.query?.id)
+    }, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false
     })
 
     if (recordQuery.isLoading) {

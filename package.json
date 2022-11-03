@@ -16,7 +16,8 @@
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:generate": "npx prisma generate",
     "prisma:seed": "node prisma/seed.js",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "dx": "run-s prisma:migrate prisma:seed dev"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",
@@ -34,7 +35,6 @@
     "@uc-platform/advertisement-service-client": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.3",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.1",
     "moment": "^2.29.4",

@@ -132,7 +132,7 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
                 { renderPrice() }
             </div>
             <div className="text-sm">
-                Najmenšia suma, ktorá sa da prihodiť je <span className="font-semibold">100 €</span>
+                Najmenšia čiastka, ktorá sa da prihodiť je <span className="font-semibold">100 €</span>
             </div>
             <form className="space-y-4" onSubmit={handleOnSubmit}>
                 <div className="col-span-3 sm:col-span-2">
