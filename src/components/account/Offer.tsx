@@ -20,7 +20,7 @@ export const Offer: FC = () => {
             ))
         }
 
-        return offerQuery?.data?.map((record) => (
+        return offerQuery?.data?.map((record: any) => (
             <Record key={record?.id} record={record} />
         ))
     }

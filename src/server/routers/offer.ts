@@ -1,11 +1,13 @@
 import { publicProcedure, router } from "../trpc";
-import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
-import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
-import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
+//import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
+//import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
+//import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
 import { z } from 'zod';
-import * as dotenv from 'dotenv';
-dotenv.config();
+//import * as dotenv from 'dotenv';
+//dotenv.config();
+import { advertisements } from 'data/advertisements';
 
+/**
 const config = new PlatformCoreConfig();
 
 const advertisementService: AdvertisementService = new AdvertisementService(
@@ -13,6 +15,7 @@ const advertisementService: AdvertisementService = new AdvertisementService(
         config
     )
 );
+*/
 
 export const offerRouter = router({
     get: publicProcedure
@@ -33,8 +36,9 @@ export const offerRouter = router({
                 },
             });
 
-            const items = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
-            return items?.data?.length > 0 ? items?.data[0] : null;
+            //const items = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
+            //return items?.data?.length > 0 ? items?.data[0] : null;
+            return advertisements?.find((advertisement: any) => advertisement.id === input?.id);
         }),
     list: publicProcedure
         .input(z.object({
@@ -58,7 +62,8 @@ export const offerRouter = router({
                 limit,
             });
 
-            const items = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
-            return items?.data || [];
+            //const items = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
+            //return items?.data || [];
+            return advertisements;
         })
 })

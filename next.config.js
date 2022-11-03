@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    unoptimized: true,
     domains: ['s.unitedclassifieds.sk', 'img.unitedclassifieds.sk'],
   },
   serverRuntimeConfig: {
