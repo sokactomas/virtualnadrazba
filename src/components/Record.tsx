@@ -45,7 +45,7 @@ export const Record: FC<RecordProps> = ({ record }) => {
             return (
                 <span className="flex items-center space-x-1">
                     <span>pridané pred</span>
-                    <span className="bg-red-600 py-1 px-2 text-white flex items-center space-x-1">
+                    <span className="text-red-600 py-1 px-2 flex items-center space-x-1">
                         <FireIcon className="h-5 w-5 animate-pulse" />
                         <span className="uppercase text-sm font-semibold">
                             menej ako hodinou

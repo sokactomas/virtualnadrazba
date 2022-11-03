@@ -356,18 +356,16 @@ const Detail: NextPageWithLayout = () => {
                 </div>
                 <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 space-y-2 md:space-y-0 md:grid" + (!show ? " hidden" : "")}>
                     { renderVehicleHistory() }
-                    <div className={"rounded border py-2 px-3" + (stkValid === 1 && ekValid === 1 ? ' border-green-600 text-green-900 bg-green-100' : ' border-orange-600 text-orange-900 bg-orange-100')}>
-                        <div>
-                            <div className="font-bold mb-1">Overenie STK a EK</div>
-                            <div>Overenie STK a EK z online zdrojov.</div>
-                            {(stkValid !== 1 || ekValid !== 1) && <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={setStkEk}>
-                                Overiť STK / EK
-                            </button>}
-                            {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk && stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
-                            {stkValid === 2 && <div className="mt-2 text-red-900">Platnosť STK: neplatné</div>}
-                            {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek && ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
-                            {ekValid === 2 && <div className="mt-2 text-red-900">Platnosť EK: neplatné</div>}
-                        </div>
+                    <div className="rounded border py-2 px-3 flex flex-col justify-evenly space-y-2">
+                        <div className="font-bold">Overenie STK a EK</div>
+                        <div className="text-sm">Overenie STK a EK z online zdrojov.</div>
+                        {(stkValid !== 1 || ekValid !== 1) && (<button type="button" className="flex items-center justify-center border border-sky-300 font-semibold space-x-2 bg-sky-100 hover:bg-sky-200 text-sky-700 py-1.5 px-4 rounded-md" onClick={setStkEk}>
+                            Overiť STK / EK
+                        </button>)}
+                        {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk && stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
+                        {stkValid === 2 && <div className="mt-2 text-red-900">Platnosť STK: neplatné</div>}
+                        {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek && ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
+                        {ekValid === 2 && <div className="mt-2 text-red-900">Platnosť EK: neplatné</div>}
                     </div>
                 </div>
                 <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 space-y-2 md:space-y-0 md:grid" + (!show ? " hidden" : "")}>
