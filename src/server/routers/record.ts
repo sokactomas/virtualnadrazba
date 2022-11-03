@@ -1,23 +1,24 @@
 import { publicProcedure, router } from "../trpc";
 import { prisma } from 'server/prisma';
 import moment from "moment";
-import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
-import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
-import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
+//import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/PlatformCoreConfig.js';
+//import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
+//import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
 import { z } from 'zod';
-import * as dotenv from 'dotenv';
+//import * as dotenv from 'dotenv';
 import { observable } from "@trpc/server/observable";
 import { Record } from "@prisma/client";
 import { EventEmitter } from "events";
-dotenv.config();
+import { advertisements } from 'data/advertisements';
+//dotenv.config();
 
-const config = new PlatformCoreConfig();
+//const config = new PlatformCoreConfig();
 
-const advertisementService: AdvertisementService = new AdvertisementService(
-    new AdvertisementServiceClientConfig(
-        config
-    )
-);
+//const advertisementService: AdvertisementService = new AdvertisementService(
+    //new AdvertisementServiceClientConfig(
+        //config
+    //)
+//);
 
 const ee = new EventEmitter();
 
@@ -79,11 +80,11 @@ export const recordRouter = router({
                 limit
             })
 
-            const advertisements = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
-
+            //const advertisements = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', filter)
             const records: any = [];
             items?.forEach((item) => {
-                const advertisement = advertisements?.data?.find((ad) => ad.id === item?.platformId);
+                //const advertisement = advertisements?.data?.find((ad) => ad.id === item?.platformId);
+                const advertisement: any = advertisements?.find((ad) => ad.id === item?.platformId);
                 records.push({
                     ...item,
                     image: advertisement?.image
@@ -133,6 +134,7 @@ export const recordRouter = router({
             return null;
         }
 
+        /**
         const pltRecord = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', JSON.stringify({
             where: {
                 id: record.platformId
@@ -142,10 +144,14 @@ export const recordRouter = router({
                 'Accept-Language': 'sk',
             }
         });
+        */
+
+        const pltRecord = advertisements.find((advertisement) => advertisement.id === record.platformId);
 
         return {
             record,
-            pltRecord: pltRecord.data
+            //pltRecord: pltRecord.data
+            pltRecord
         };
     }),
     fastBid: publicProcedure

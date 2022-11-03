@@ -132,16 +132,16 @@ const Detail: NextPageWithLayout = () => {
         <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
                 <h1 className="mt-0 mb-6 text-2xl">{ recordQuery?.data?.record.title }</h1>
-                {(recordQuery?.data?.pltRecord[0].image || recordQuery?.data?.pltRecord[0].images.length > 0) &&
+                {(recordQuery && (recordQuery?.data?.pltRecord?.image || recordQuery?.data?.pltRecord?.images?.length > 0)) &&
                     <div className="rounded-md overflow-hidden">
-                        { recordQuery?.data?.pltRecord[0].image &&
+                        { recordQuery?.data?.pltRecord?.image &&
                             <div className="">
-                                <img src={ recordQuery?.data?.pltRecord[0].image.previewUrls.orig } alt=""/>
+                                <img src={ recordQuery?.data?.pltRecord?.image.previewUrls.orig } alt=""/>
                             </div>
                         }
-                        {recordQuery?.data?.pltRecord[0].images.length > 0 &&
+                        {recordQuery?.data?.pltRecord?.images.length > 0 &&
                             <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
-                                {recordQuery?.data?.pltRecord[0].images.map((image, index) => {
+                                {recordQuery?.data?.pltRecord?.images.map((image, index) => {
                                     return (
                                         <img key={index} src={image.previewUrls.orig} alt=""/>
                                     );
@@ -177,43 +177,43 @@ const Detail: NextPageWithLayout = () => {
                     <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         <li className="p-item">
                             <span className="block font-bold">Palivo:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].fuelValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.fuelValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Karoséria:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].bodyworkValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.bodyworkValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Rok výroby:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].monthValue }/{ recordQuery?.data?.pltRecord[0].yearValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.monthValue }/{ recordQuery?.data?.pltRecord?.yearValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Prevodovka:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].gearboxValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.gearboxValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Objem valcov:</span>
-                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord[0].engineCapacity)) } cm<sup>3</sup></span>
+                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord?.engineCapacity)) } cm<sup>3</sup></span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Výkon:</span>
-                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord[0].enginePower)) }kW</span>
+                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord?.enginePower)) }kW</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Najazdené km:</span>
-                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord[0].mileage)) } km</span>
+                            <span className="p-cap">{ numberFormat.format(Number(recordQuery?.data?.pltRecord?.mileage)) } km</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Pohon:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].driveValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.driveValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Farba:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].colorValue }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.colorValue }</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">VIN:</span>
-                            <span className="p-cap">{ recordQuery?.data?.pltRecord[0].vin }</span>
+                            <span className="p-cap">{ recordQuery?.data?.pltRecord?.vin }</span>
                         </li>
                     </ul>
                 </div>
@@ -223,15 +223,15 @@ const Detail: NextPageWithLayout = () => {
                     <ul className="grid grid-cols-3 gap-4">
                         <li className="p-item">
                             <span className="block font-bold">Kombinovaná:</span>
-                            <span className="p-value">{ recordQuery?.data?.pltRecord[0].consumptionCombined } l</span>
+                            <span className="p-value">{ recordQuery?.data?.pltRecord?.consumptionCombined } l</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">V meste:</span>
-                            <span className="p-value">{ recordQuery?.data?.pltRecord[0].consumptionInTheCity } l</span>
+                            <span className="p-value">{ recordQuery?.data?.pltRecord?.consumptionInTheCity } l</span>
                         </li>
                         <li className="p-item">
                             <span className="block font-bold">Mimo mesta:</span>
-                            <span className="p-value">{ recordQuery?.data?.pltRecord[0].consumptionOutOfTown } l</span>
+                            <span className="p-value">{ recordQuery?.data?.pltRecord?.consumptionOutOfTown } l</span>
                         </li>
                     </ul>
                 </div>
@@ -243,7 +243,7 @@ const Detail: NextPageWithLayout = () => {
                             <h4 className="mt-0 mb-3 text-lg font-bold">Bezpečnosť:</h4>
                             <ul className="p-options">
                                 {
-                                    recordQuery?.data?.pltRecord[0].carEquipmentValue.split(',').map((item, index) => {
+                                    recordQuery?.data?.pltRecord?.carEquipmentValue.split(',').map((item, index) => {
                                         return (
                                             <li key={index}>{item.trim()}</li>
                                         );
@@ -273,7 +273,7 @@ const Detail: NextPageWithLayout = () => {
                             <h4 className="mt-0 mb-3 text-lg font-bold">Ostatné:</h4>
                             <ul className="p-options">
                                 {
-                                    recordQuery?.data?.pltRecord[0].otherEquipment.split(',').map((item, index) => {
+                                    recordQuery?.data?.pltRecord?.otherEquipment.split(',').map((item, index) => {
                                         return (
                                             <li key={index}>{item.trim()}</li>
                                         );
@@ -284,7 +284,7 @@ const Detail: NextPageWithLayout = () => {
                     </div>
                     <h4 className="mt-4 mb-3 text-lg font-bold">Ďalšia výbava</h4>
                     <div className="p-message">
-                        {recordQuery?.data?.pltRecord[0].otherEquipment}
+                        {recordQuery?.data?.pltRecord?.otherEquipment}
                     </div>
                 </div>
             </article>
