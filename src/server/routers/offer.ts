@@ -43,7 +43,8 @@ export const offerRouter = router({
             const limit = input?.limit || 20;
             const filter = JSON.stringify({
                 where: {
-                    userId: input?.userId
+                    userId: input?.userId,
+                    businessState: 22760
                 },
                 extended: {
                     image: {

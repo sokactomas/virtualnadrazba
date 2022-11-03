@@ -1,5 +1,5 @@
 import { Context } from "./context";
-import { initTRPC } from '@trpc/server';
+import { initTRPC, RootConfig, TRPCError } from '@trpc/server';
 import SuperJSON from "superjson";
 import { ZodError } from "zod";
 
@@ -27,3 +27,24 @@ export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
 export const margeRouters = t.mergeRouters;
+
+const isAuthed = middleware(({ next, ctx }: any) => {
+    const user = ctx.session?.user;
+
+    if (!user?.name) {
+        throw new TRPCError({
+            code: 'UNAUTHORIZED'
+        })
+    }
+
+    return next({
+        ctx: {
+            user: {
+                ...user,
+                name: user.name
+            }
+        }
+    });
+})
+
+export const authedProcedure = t.procedure.use(isAuthed);

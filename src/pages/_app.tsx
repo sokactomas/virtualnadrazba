@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import type { AppProps, AppType } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { Layout } from "~/components/Layout";
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { trpc } from '~/utils/trpc';
 
 export type NextPageWithLayout<TProps = Record<string, unknown>, TInitialProps = TProps> = NextPage<TProps, TInitialProps> & {
@@ -22,5 +22,11 @@ const App = (({ Component, pageProps: { session, ...pageProps} }: AppPropsWithLa
         </SessionProvider>
     ) 
 }) as AppType;
+
+App.getInitialProps = async ({ ctx }) => {
+    return {
+        session: await getSession(ctx)
+    }
+}
 
 export default trpc.withTRPC(App);
