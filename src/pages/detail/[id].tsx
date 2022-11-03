@@ -9,6 +9,7 @@ import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 const Detail: NextPageWithLayout = () => {
     const [show, setShow] = useState<boolean>(false);
     const [invalidPhotos, setInvalidPhotos] = useState<IPhotoDamage[]>([]);
+    const [damageCheck, setDamageCheck] = useState<number>(0);
     const [stkValid, setStkValid] = useState<number>(0);
     const [ekValid, setEkValid] = useState<number>(0);
     const [stk, setStk] = useState<Date>();
@@ -85,6 +86,7 @@ const Detail: NextPageWithLayout = () => {
         ];
 
         let items: IPhotoDamage[] = [];
+        setDamageCheck(1);
 
         photos.forEach(async (image) => {
             await getPhotoData(image)
@@ -126,6 +128,12 @@ const Detail: NextPageWithLayout = () => {
                     }
                 })
         });
+
+        if (items.length > 0) {
+            setDamageCheck(2);
+        } else {
+            setDamageCheck(3);
+        }
 
         setInvalidPhotos(items);
     }
@@ -332,11 +340,19 @@ const Detail: NextPageWithLayout = () => {
                     </div>
                 </div>
                 <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                    <div className={
+                        "rounded border py-2 px-3"
+                        + (damageCheck === 0 ? ' border-orange-600 text-orange-900 bg-orange-100 ' : '')
+                        + (damageCheck === 1 ? ' border-gray-600 text-gray-900 bg-gray-100 ' : '')
+                        + (damageCheck === 2 ? ' border-red-600 text-red-900 bg-red-100 ' : '')
+                        + (damageCheck === 3 ? ' border-green-600 text-green-900 bg-green-100 ' : '')
+                    }>
                         <div>
                             <div className="font-bold mb-1">Overenie poškodenia</div>
                             <div>Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
-                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
+                            {damageCheck === 0 && (
+                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
+                            )}
                         </div>
                     </div>
                     <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
