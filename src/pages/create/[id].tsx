@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
-import { TypeRadio } from "~/components/create/TypeRadio";
-import { trpc } from "~/utils/trpc";
+import { TypeRadio } from "components/create/TypeRadio";
+import { trpc } from "utils/trpc";
 import { NextPageWithLayout } from "../_app";
 
 const CreateRecord: NextPageWithLayout = () => {
@@ -11,6 +11,9 @@ const CreateRecord: NextPageWithLayout = () => {
 
     const offerQuery = trpc.offer.get.useQuery({
         id: router?.query?.id as string
+    },{
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     })
 
     const [price, setPrice] = useState<number>(offerQuery?.data?.priceCurrent || 0);

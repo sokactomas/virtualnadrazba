@@ -1,5 +1,6 @@
 import {  ClockIcon, EyeIcon, FireIcon, PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TagIcon } from "@heroicons/react/24/solid";
+import { useDuration } from "hooks/duration";
 import moment, { Duration } from "moment";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -11,23 +12,16 @@ type RecordProps = {
 }
 
 export const Record: FC<RecordProps> = ({ record }) => {
-    const [duration, setDuration] = useState<Duration|null>(null);
     const { data: session } = useSession();
 
-    useEffect(() => {
-        let interval: any = null;
-        interval = setInterval(() => {
-            const now = moment();
-            const time = moment(record.validUntil);
+    const {
+        setTime,
+        duration
+    } = useDuration();
 
-            if (now.isBefore(time)) {
-                setDuration(moment.duration(time.diff(now)));
-            }
-        }, 1000)
-        return () => {
-            clearInterval(interval)
-        }
-    })
+    useEffect(() => {
+        setTime(record.validUntil)
+    }, [record, setTime])
 
     const renderDuration = () => {
         if (duration) {

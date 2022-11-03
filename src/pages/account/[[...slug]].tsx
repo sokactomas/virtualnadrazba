@@ -1,10 +1,8 @@
 import { ArchiveBoxIcon, BanknotesIcon, PlusIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Auction } from "~/components/account/Auction";
-import { Offer } from "~/components/account/Offer";
-import { InvalidRecord } from "~/components/create/InvalidRecord";
-import { Record } from "~/components/create/Record";
+import { Auction } from "components/account/Auction";
+import { Offer } from "components/account/Offer";
 import { NextPageWithLayout } from "../_app";
 
 const Account: NextPageWithLayout = () => {

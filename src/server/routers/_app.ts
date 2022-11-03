@@ -8,12 +8,12 @@ export const appRouter = router({
     randomNumber: publicProcedure.subscription(() => {
         return observable<number>((emit) => {
             const int = setInterval(() => {
-                emit.next(Math.random())
-            }, 500)
+                emit.next(Math.random());
+            }, 500);
             return () => {
                 clearInterval(int);
-            } 
-        })
+            };
+        });
     }),
     record: recordRouter,
     offer: offerRouter,

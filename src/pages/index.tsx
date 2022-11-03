@@ -1,22 +1,30 @@
-import { Fragment } from "react";
-import { Record } from "~/components/Record";
-import { NextPageWithLayout } from "~/pages/_app";
-import { trpc } from "~/utils/trpc";
+import { Fragment, useState } from "react";
+import { Record } from "components/Record";
+import { NextPageWithLayout } from "pages/_app";
+import { trpc } from "utils/trpc";
 
 const Homepage: NextPageWithLayout = () => {
     const recordQuery = trpc.record.list.useInfiniteQuery({
-        limit: 20,
+        limit: 2,
     }, {
-        getNextPageParam(lastPage) {
+        getNextPageParam(lastPage: any) {
             return lastPage.nextCursor;
         },
+    });
+
+    const [number, setNumber] = useState<number>();
+
+    trpc.randomNumber.useSubscription(undefined, {
+        onData(n) {
+            setNumber(n)
+        }
     });
     
     const renderRecords = () => {
         if (!recordQuery.isLoading) {
-            return recordQuery?.data?.pages?.map((page, index) => (
+            return recordQuery?.data?.pages?.map((page: any, index: number) => (
                 <Fragment key={page.items[0]?.id || index}>
-                    {page.items.map((item) => (
+                    {page.items.map((item: any) => (
                         <Record key={item.id} record={item} />
                     ))}
                 </Fragment>
@@ -28,6 +36,9 @@ const Homepage: NextPageWithLayout = () => {
 
     return (
         <div className="w-full lg:w-4/5 py-2 px-5 lg:p-0 space-y-4">
+            <div>
+                Random number right here: { number }
+            </div>
             <div className="flex flex-col w-full space-y-2">
             { renderRecords() }
             </div>

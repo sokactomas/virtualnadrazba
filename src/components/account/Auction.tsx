@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { FC, Fragment } from "react";
-import { trpc } from "~/utils/trpc";
+import { trpc } from "utils/trpc";
 import { Record } from "../Record";
 
 export const Auction: FC = () => {
@@ -10,7 +10,7 @@ export const Auction: FC = () => {
         limit: 20,
         userId: session?.user?.id
     }, {
-        getNextPageParam(lastPage) {
+        getNextPageParam(lastPage: any) {
             return lastPage.nextCursor;
         },
     });
@@ -19,13 +19,13 @@ export const Auction: FC = () => {
         let hasRecords = false;
         let records;
         if (!recordQuery.isLoading) {
-            records = recordQuery?.data?.pages?.map((page, index) => {
+            records = recordQuery?.data?.pages?.map((page: any, index: number) => {
                 if (page?.items?.length !== 0) {
                     hasRecords = true;
                 }
                 return (
                     <Fragment key={page.items[0]?.id || index}>
-                        {page.items.map((item) => (
+                        {page.items.map((item: any) => (
                             <Record key={item.id} record={item} />
                         ))}
                     </Fragment>

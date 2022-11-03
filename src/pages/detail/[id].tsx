@@ -1,8 +1,10 @@
-import { NextPageWithLayout } from "~/pages/_app";
+import { NextPageWithLayout } from "pages/_app";
 import { useState, useRef } from "react";
-import {IDamage, IPhotoDamage} from "~/common/interfaces/detail/damage.interface";
-import {trpc} from "~/utils/trpc";
+import {IDamage, IPhotoDamage} from "common/interfaces/detail/damage.interface";
+import {trpc} from "utils/trpc";
 import {useRouter} from "next/router";
+import { BidPrice } from "components/detail/BidPrice";
+import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 
 const Detail: NextPageWithLayout = () => {
     const [show, setShow] = useState<boolean>(false);
@@ -231,73 +233,48 @@ const Detail: NextPageWithLayout = () => {
                     </div>
                 </div>
             </article>
-            <aside className="p-info">
-                <div className="rounded-md border p-5 shadow-2xl">
-                    <ul className="grid grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-2 text-center">
-                        <li>
-                            <span>Aukcia končí za</span>
-                            <span className="block font-bold text-2xl">5 dní 20:30:40</span>
-                        </li>
-                        <li>
-                            <span>Min. ponúknutá suma</span>
-                            <span className="block font-bold text-2xl">{ recordQuery?.data?.record.price } €</span>
-                        </li>
-                    </ul>
-                    <form className="mt-4">
-                        <div className="col-span-3 sm:col-span-2">
-                            <div className="mt-1 flex rounded-md shadow-sm">
-                                <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">€</span>
-                                <input type="number" name="price" id="company-website" value={ recordQuery?.data?.record.price } min={ recordQuery?.data?.record.price } step="100" className="block w-full p-2 rounded-none rounded-r-md border border-gray-300 sm:text-sm" placeholder="21000"/>
-                            </div>
-                        </div>
-                        <button type="button" className="mt-4 w-full bg-amber-600 p-2 text-white rounded-md border border-amber-700">Prihodiť na vozidlo</button>
-                    </form>
+            <aside className="p-info space-y-2">
+                <BidPrice 
+                    record={recordQuery?.data?.record} 
+                />
+                <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100 flex items-center justify-center space-x-4">
+                    <ShieldCheckIcon className="w-14 h-14" />
+                    <div>
+                        <div className="font-bold text-lg">Overené nezávisle</div>
+                        <div>Vozidlo bolo nezávisle overené odborníkom z autobazar.eu</div>
+                    </div>
                 </div>
-
-                <div className="mt-8">
-                    <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100 flex items-center justify-center">
-                        <div className="w-12 h-12 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                            </svg>
-                        </div>
-                        <div className="">
-                            <div className="font-bold text-lg mb-1">Overené nezávisle</div>
-                            <div>Vozidlo bolo nezávisle overené odborníkom z autobazar.eu</div>
+                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
+                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                        <div>
+                            <div className="font-bold mb-1">História vozidla</div>
+                            <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
+                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť vozidlo</button>
                         </div>
                     </div>
-                    <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
-                            <div>
-                                <div className="font-bold mb-1">História vozidla</div>
-                                <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
-                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť vozidlo</button>
-                            </div>
-                        </div>
-                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
-                            <div>
-                                <div className="font-bold mb-1">Overenie STK a EK</div>
-                                <div>Overenie STK a EK z online zdrojov.</div>
-                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť STK / EK</button>
-                            </div>
+                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                        <div>
+                            <div className="font-bold mb-1">Overenie STK a EK</div>
+                            <div>Overenie STK a EK z online zdrojov.</div>
+                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700">Overiť STK / EK</button>
                         </div>
                     </div>
-                    <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
-                            <div>
-                                <div className="font-bold mb-1">Overenie poškodenia</div>
-                                <div>Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
-                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
-                            </div>
+                </div>
+                <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
+                    <div className="rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                        <div>
+                            <div className="font-bold mb-1">Overenie poškodenia</div>
+                            <div>Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
+                            <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
                         </div>
-                        <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
-                            <div className="h-12 text-center">
-                                <span className="text-3xl">9.5 <small className="text-base">/ 10</small></span>
-                            </div>
-                            <div>
-                                <div className="font-bold mb-1">Hodnotenie zákazníkov</div>
-                                <div>Hodnotili prechádzajúci zákazníci.</div>
-                            </div>
+                    </div>
+                    <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
+                        <div className="h-12 text-center">
+                            <span className="text-3xl">9.5 <small className="text-base">/ 10</small></span>
+                        </div>
+                        <div>
+                            <div className="font-bold mb-1">Hodnotenie zákazníkov</div>
+                            <div>Hodnotili prechádzajúci zákazníci.</div>
                         </div>
                     </div>
                 </div>
