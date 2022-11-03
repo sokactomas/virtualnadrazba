@@ -17,12 +17,13 @@ const CreateRecord: NextPageWithLayout = () => {
         refetchOnWindowFocus: false,
     })
 
-    const [price, setPrice] = useState<number>(offerQuery?.data?.priceCurrent || 0);
+    const [price, setPrice] = useState<number>(0);
     const [type, setType] = useState<number>(0);
     const [pkg, setPkg] = useState<number>(0);
 
     useEffect(() => {
-        setPrice(offerQuery?.data?.priceCurrent || 0)
+        const newPrice = offerQuery?.data?.priceCurrent || 0;
+        setPrice(newPrice)
     }, [offerQuery?.data])
     
     const addRecord = trpc.record.create.useMutation({
@@ -65,7 +66,7 @@ const CreateRecord: NextPageWithLayout = () => {
                         </label>
                         <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} type="number" id="starting-price" placeholder='Vyvolavacia cena' className='border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 field-outline-ring' />
                         <span className="text-sm bg-sky-100 w-full flex px-4 py-2 rounded-lg text-sky-900">
-                            Ideálna vyvolavacia cena: <span className="font-semibold">13 490 €</span>
+                            Ideálna vyvolavacia cena: <span className="font-semibold"> { Math.ceil(price * 1.05).toLocaleString() } €</span>
                         </span>
                     </div>
                     <div className="space-y-2">
