@@ -136,14 +136,14 @@ const Detail: NextPageWithLayout = () => {
         <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
                 <h1 className="mt-0 mb-6 text-2xl">{ recordQuery?.data?.record.title }</h1>
-                {(recordQuery && (recordQuery?.data?.pltRecord?.image || recordQuery?.data?.pltRecord?.images?.length || 0 > 0)) &&
+                {(recordQuery && (recordQuery?.data?.pltRecord?.image || (recordQuery?.data?.pltRecord?.images?.length || 0) > 0)) &&
                     <div className="rounded-md overflow-hidden">
                         { recordQuery?.data?.pltRecord?.image &&
                             <div className="">
                                 <img src={ recordQuery?.data?.pltRecord?.image.previewUrls.orig } alt=""/>
                             </div>
                         }
-                        {recordQuery?.data?.pltRecord?.images?.length || 0 > 0 &&
+                        {(recordQuery?.data?.pltRecord?.images?.length || 0) > 0 &&
                             <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
                                 {recordQuery?.data?.pltRecord?.images.map((image, index) => {
                                     return (
@@ -166,7 +166,7 @@ const Detail: NextPageWithLayout = () => {
                             return (
                                 <div key={i} className="mt-4 flex flex-row gap-4">
                                     <div className="w-[13.33rem] max-h-40">
-                                        <img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" />
+                                        <a href={image.result.photo} target="_blank"><img src={image.result.photo} alt="" className="max-w-xs max-h-40 mx-auto" /></a>
                                     </div>
                                     <div>
                                         {image.result.damages.map((damage, j) => {
@@ -350,31 +350,40 @@ const Detail: NextPageWithLayout = () => {
                     </div>
                 </div>
 
-                <div className={"mt-8 rounded-md border p-5 md:block" + (!show ? " hidden" : "")}>
+                <div className={"mt-8 rounded-md border py-2 px-3 md:block" + (!show ? " hidden" : "")}>
+                    <div className="font-bold">Základné údaje:</div>
                     <ul className="grid grid-cols-2">
-                        <li className="text-green-800 flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                            <span className="pl-1">prihlásime auto za vás</span>
+                        <li className="mt-2 text-green-800">
+                            <span className="block font-bold">Počet majiteľov/držiteľov vozidla v SR:</span>
+                            <span className="p-value">3 / 3</span>
                         </li>
-                        <li className="text-red-800 flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            <span className="pl-1">zabezpečíme dovoz auta</span>
+                        <li className="mt-2 text-green-800">
+                            <span className="block font-bold">Pátranie:</span>
+                            <span>nie</span>
                         </li>
-                        <li className="text-green-800 flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                            <span className="pl-1">financovanie ukončené</span>
+                        <li className="mt-2 text-red-800">
+                            <span className="block font-bold">Kontrola originality:</span>
+                            <span>nie</span>
                         </li>
-                        <li className="text-gray-500 flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                            </svg>
-                            <span className="pl-1">servisované v autorizovanom servise</span>
+                        <li className="mt-2 text-green-800">
+                            <span className="block font-bold">Leasing vozidla:</span>
+                            <span>nie</span>
+                        </li>
+                        <li className="mt-2 text-green-800">
+                            <span className="block font-bold">Poškodenie vozidla:</span>
+                            <span>nie</span>
+                        </li>
+                        <li className="mt-2 text-green-800">
+                            <span className="block font-bold">Servisované v autorizovanom servise:</span>
+                            <span>áno</span>
+                        </li>
+                        <li className="mt-2 text-red-800">
+                            <span className="block font-bold">Prihlásime auto za vás:</span>
+                            <span>nie</span>
+                        </li>
+                        <li className="mt-2 text-red-800">
+                            <span className="block font-bold">Zabezpečíme dovoz auta k vám domov:</span>
+                            <span>nie</span>
                         </li>
                     </ul>
                 </div>
