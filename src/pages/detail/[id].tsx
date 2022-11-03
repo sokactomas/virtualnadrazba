@@ -80,7 +80,8 @@ const Detail: NextPageWithLayout = () => {
 
     const getInvalidPhotos = () => {
         const photos = [
-            'https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg'
+            'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
+            'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
         ];
 
         photos.forEach(image => {
@@ -146,10 +147,30 @@ const Detail: NextPageWithLayout = () => {
                                     );
                                 })
                                 }
+                                <img src="https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png" alt="" />
+                                <img src="https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png" alt="" />
                             </div>
                         }
                     </div>
                 }
+
+                <hr className="mt-8" />
+                <div className="mt-8">
+                {[
+                    'https://m1.aimg.sk/inzercie/78b744033b71ffd3fe6924d3e4f2ac62c3a747581667467364.png',
+                    'https://m1.aimg.sk/inzercie/6f475ebfdfcb8c110b8e10ec6aaa91cb170c13f21667467424.png'
+                ].map((src, i) => {
+                    return (
+                        <div key={i} className="flex">
+                            <img src={src} alt="" />
+                            <div>
+                                info
+                            </div>
+                        </div>
+                    );
+                })};
+                </div>
+
                 <hr className="mt-8" />
                 <div className="mt-8">
                     <h3 className="mt-0 mb-3 text-2xl">Základné údaje</h3>
