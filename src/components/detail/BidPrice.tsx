@@ -54,6 +54,16 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
         await recordMutation.mutateAsync(data);
     }
 
+    const bidPrice = async (addPrice: number) => {
+        const data = {
+            price: (currentPrice || 0) + addPrice,
+            recordId: record?.id as number,
+            userId: session?.user?.id as number,
+        };
+
+        await recordMutation.mutateAsync(data);
+    }
+
     const {
         setTime,
         duration
@@ -146,6 +156,29 @@ export const BidPrice: FC<BidPriceProps> = ({ record }) => {
                 </div>
                 <button type="submit" className="button-primary w-full" disabled={!price || parseInt(price) <= ((currentPrice || 0) + 99)}>Prihodiť na vozidlo</button>
             </form>
+            <div className="text-sm font-semibold text-gray-700">
+                Rýchlo prihodiť
+            </div>
+            <div className="flex items-center justify-evenly space-x-2">
+                <button className="button-primary flex-1" onClick={(e) => {
+                    e.preventDefault();
+                    bidPrice(100);
+                }}>
+                    +100
+                </button>
+                <button className="button-primary flex-1" onClick={(e) => {
+                    e.preventDefault();
+                    bidPrice(300);
+                }}>
+                    +300
+                </button>
+                <button className="button-primary flex-1" onClick={(e) => {
+                    e.preventDefault();
+                    bidPrice(500);
+                }}>
+                    +500
+                </button>
+            </div>
         </div>
     )
 }
