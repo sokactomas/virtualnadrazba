@@ -1,96 +1,17 @@
 import { NextPageWithLayout } from "~/pages/_app";
 import { useState, useRef } from "react";
-import {IDamage, IPhotoDamage} from "~/common/interfaces/detail/damage.interface";
-import {trpc} from "~/utils/trpc";
-import {useRouter} from "next/router";
 
 const Detail: NextPageWithLayout = () => {
     const [show, setShow] = useState<boolean>(false);
-    const [invalidPhotos, setInvalidPhotos] = useState<IPhotoDamage[]>([]);
 
     const toggleShow = () => {
         setShow(!show);
     }
 
-    const router = useRouter();
-
-    const recordQuery = trpc.record.get.useQuery({
-        id: Number(router?.query?.id)
-    })
-
-    if (recordQuery.isLoading) {
-        return (
-            <div>Načítavam ...</div>
-        );
-    }
-
-    const getPhotoData = (image:string): Promise<any> => {
-        return fetch('https://vehicle-damage-assessment.p.rapidapi.com/run', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'X-RapidAPI-Key': '6e2b5c626dmsh6e3498a12d61233p1105abjsn3385b4effa49',
-                'X-RapidAPI-Host': 'vehicle-damage-assessment.p.rapidapi.com'
-            },
-            body: JSON.stringify({
-                draw_result: true,
-                image
-            })
-        });
-    }
-
-    const getInvalidPhotos = () => {
-        const photos = [
-            'https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg',
-            'https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg'
-        ];
-
-        photos.forEach(image => {
-            getPhotoData(image)
-                .then(response => response.json())
-                .then(response => {
-                    let damages:IDamage[] = [];
-                    response.output.elements.forEach((res: { score: number; bbox: any; }) => {
-                        if (res.score >= 0.4) {
-                            damages.push({
-                                score: res.score,
-                                box: res.bbox
-                            });
-                        }
-                    });
-
-                    if (damages.length > 0) {
-                        damages.sort((a: IDamage, b: IDamage): number => {
-                            if (a.score > b.score) {
-                                return -1;
-                            }
-                            if (a.score < b.score) {
-                                return 1;
-                            }
-
-                            return 0;
-                        });
-
-                        invalidPhotos.push({
-                            photo: image,
-                            result: {
-                                photo: response.output_url,
-                                urlExpiry: response.url_expiry,
-                                isDamaged: true,
-                                damages
-                            }
-                        });
-
-                        setInvalidPhotos(invalidPhotos);
-                    }
-                })
-        });
-    }
-
     return (
         <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
-                <h1 className="mt-0 mb-6 text-2xl">{ recordQuery?.data?.record.title }</h1>
+                <h1 className="mt-0 mb-6 text-2xl">Škoda Superb Combi 2.0 TDI 190k Sportline EU6</h1>
                 <div className="rounded-md overflow-hidden">
                     <div className="">
                         <img src="https://www.autobazar.eu/pics/9021/30068963_1.jpg" alt=""/>
@@ -107,7 +28,6 @@ const Detail: NextPageWithLayout = () => {
                         <img src="https://www.autobazar.eu/pics/9021/30068963_10.jpg" alt="" />
                         <img src="https://www.autobazar.eu/pics/9021/30068963_11.jpg" alt="" />
                         <img src="https://www.autobazar.eu/pics/9021/30068963_12.jpg" alt="" />
-                        <img src="https://jixjiastorage.blob.core.windows.net/public/sensor-ai/vehicle_damage/sample.jpg" alt="" />
                     </div>
                 </div>
                 <hr className="mt-8" />
@@ -268,14 +188,14 @@ const Detail: NextPageWithLayout = () => {
                         </li>
                         <li>
                             <span>Min. ponúknutá suma</span>
-                            <span className="block font-bold text-2xl">{ recordQuery?.data?.record.price } €</span>
+                            <span className="block font-bold text-2xl">21 000 €</span>
                         </li>
                     </ul>
                     <form className="mt-4">
                         <div className="col-span-3 sm:col-span-2">
                             <div className="mt-1 flex rounded-md shadow-sm">
                                 <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">€</span>
-                                <input type="number" name="price" id="company-website" value={ recordQuery?.data?.record.price } min={ recordQuery?.data?.record.price } step="100" className="block w-full p-2 rounded-none rounded-r-md border border-gray-300 sm:text-sm" placeholder="21000"/>
+                                <input type="number" name="price" id="company-website" value="21000" min="21000" step="100" className="block w-full p-2 rounded-none rounded-r-md border border-gray-300 sm:text-sm" placeholder="21000"/>
                             </div>
                         </div>
                         <button type="button" className="mt-4 w-full bg-amber-600 p-2 text-white rounded-md border border-amber-700">Prihodiť na vozidlo</button>
@@ -311,11 +231,13 @@ const Detail: NextPageWithLayout = () => {
                         </div>
                     </div>
                     <div className={"grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 md:grid" + (!show ? " hidden" : "")}>
-                        <div className="mt-3 rounded border py-2 px-3 border-orange-600 text-orange-900 bg-orange-100">
+                        <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
+                            <div className="h-12">
+                                <img src="https://www.autopredajcaroka.eu/images/badge-result.svg" className="h-12 m-auto" />
+                            </div>
                             <div>
-                                <div className="font-bold mb-1">Overenie poškodenia</div>
-                                <div>Overiť poškodenie vozidla pomocou umelej inteligencie.</div>
-                                <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={getInvalidPhotos}>Overiť stav</button>
+                                <div className="font-bold mb-1">Vitaz autopredajca roka</div>
+                                <div>Predavajuci bol vitazom autopredajcu roka v roku 2021.</div>
                             </div>
                         </div>
                         <div className="mt-3 rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100">
@@ -328,6 +250,46 @@ const Detail: NextPageWithLayout = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className={"mt-8 rounded-md border p-5 shadow-2xl md:block" + (!show ? " hidden" : "")}>
+                    <div className="flex items-center">
+                        <img src="https://www.autobazar.eu/pics/logos/tm-auto.jpg?ptime=1653049219" alt="" className="rounded-md h-16 w-16" />
+                        <div className="ml-4">
+                            <h2 className="text-lg font-bold">TM-Auto</h2>
+                            <div className="flex">
+                                <img src="https://tm-auto.autobazar.eu/assets/images/icons/profesionlny-predajca.svg" alt="" />
+                                <span className="ml-1">Profesionálny predajca</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul className="mt-4">
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">prihlásime auto za vás</span>
+                        </li>
+                        <li className="text-red-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span className="pl-1">zabezpečíme dovoz auta</span>
+                        </li>
+                        <li className="text-green-800 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span className="pl-1">financovanie ukončené</span>
+                        </li>
+                        <li className="text-gray-500 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            </svg>
+                            <span className="pl-1">servisované v autorizovanom servise</span>
+                        </li>
+                    </ul>
+                    <div className="mt-4">Registrovaný predajca na Autobazar.EU od 15.02.2012</div>
                 </div>
 
                 <div className="mt-4 flex flex-row justify-center cursor-pointer select-none md:hidden" onClick={toggleShow}>

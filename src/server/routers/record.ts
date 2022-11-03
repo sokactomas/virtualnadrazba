@@ -110,5 +110,35 @@ export const recordRouter = router({
                 }
             })
             return event;
-        })
+        }),
+    get: publicProcedure.input(z.object({
+        id: z.number()
+    })).query(async ({
+        input
+    }) => {
+        const record = await prisma.record.findFirst({
+            where: {
+                id: input.id
+            }
+        });
+
+        if (!record) {
+            return null;
+        }
+
+        const pltRecord = await advertisementService.getAdvertisementsCarsApi().findCarsExtended('abmanagersk', JSON.stringify({
+            where: {
+                id: record.platformId
+            }
+        }), {
+            headers: {
+                'Accept-Language': 'sk',
+            }
+        });
+
+        return {
+            record,
+            pltRecord: pltRecord.data
+        };
+    })
 })
