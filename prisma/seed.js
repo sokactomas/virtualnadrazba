@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 
 const load = async () => {
     try {
+        await prisma.bid.deleteMany();
+        console.log("Bids removed.");
+
         await prisma.record.deleteMany();
         console.log("Records removed.");
 
