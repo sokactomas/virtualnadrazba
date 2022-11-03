@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "server/trpc";
+import { publicProcedure, router } from "../trpc";
 import { z } from 'zod';
 import { prisma } from 'server/prisma';
 

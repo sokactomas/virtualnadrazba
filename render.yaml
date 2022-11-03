@@ -3,8 +3,8 @@ services:
     name: virtualnadrazba
     env: node
     plan: free
-    buildCommand: npm install && npm build
-    startCommand: npm start
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
     healthCheckPath: /api/trpc/healthcheck
     envVars:
       - key: NODE_ENV
