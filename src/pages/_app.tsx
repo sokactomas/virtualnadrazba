@@ -17,7 +17,7 @@ type AppPropsWithLayout = AppProps & {
 const App = (({ Component, pageProps }: AppPropsWithLayout) => {
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
     return (
-        <SessionProvider session={pageProps?.session} refetchInterval={5 * 60}>
+        <SessionProvider session={pageProps['session']} refetchInterval={5 * 60}>
             { getLayout(<Component {...pageProps} />) }
         </SessionProvider>
     ) 
@@ -30,3 +30,4 @@ App.getInitialProps = async ({ ctx }: { ctx: any }) => {
 }
 
 export default trpc.withTRPC(App);
+
