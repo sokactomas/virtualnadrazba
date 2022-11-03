@@ -1,5 +1,6 @@
 import { observable } from "@trpc/server/observable";
 import { publicProcedure, router } from "../trpc";
+import { bidRouter } from "./bid";
 import { offerRouter } from "./offer";
 import { recordRouter } from "./record";
 
@@ -17,6 +18,7 @@ export const appRouter = router({
     }),
     record: recordRouter,
     offer: offerRouter,
+    bid: bidRouter,
 })
 
 export type AppRouter = typeof appRouter;

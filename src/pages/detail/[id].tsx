@@ -136,14 +136,14 @@ const Detail: NextPageWithLayout = () => {
         <div className="w-full lg:w-4/5 px-5 h-full flex flex-col-reverse md:flex-row flex-wrap gap-8">
             <article className="p-content">
                 <h1 className="mt-0 mb-6 text-2xl">{ recordQuery?.data?.record.title }</h1>
-                {(recordQuery && (recordQuery?.data?.pltRecord?.image || recordQuery?.data?.pltRecord?.images?.length > 0)) &&
+                {(recordQuery && (recordQuery?.data?.pltRecord?.image || recordQuery?.data?.pltRecord?.images?.length || 0 > 0)) &&
                     <div className="rounded-md overflow-hidden">
                         { recordQuery?.data?.pltRecord?.image &&
                             <div className="">
                                 <img src={ recordQuery?.data?.pltRecord?.image.previewUrls.orig } alt=""/>
                             </div>
                         }
-                        {recordQuery?.data?.pltRecord?.images.length > 0 &&
+                        {recordQuery?.data?.pltRecord?.images?.length || 0 > 0 &&
                             <div className="mt-3 gap-3 grid grid-cols-6 gap-2 xl:gap-4">
                                 {recordQuery?.data?.pltRecord?.images.map((image, index) => {
                                     return (
@@ -285,7 +285,7 @@ const Detail: NextPageWithLayout = () => {
                             <h4 className="mt-0 mb-3 text-lg font-bold">Ostatné:</h4>
                             <ul className="p-options">
                                 {
-                                    recordQuery?.data?.pltRecord?.otherEquipment.split(',').map((item, index) => {
+                                    recordQuery?.data?.pltRecord?.otherEquipment?.split(',').map((item, index) => {
                                         return (
                                             <li key={index}>{item.trim()}</li>
                                         );
@@ -316,7 +316,7 @@ const Detail: NextPageWithLayout = () => {
                         <div>
                             <div className="font-bold mb-1">História vozidla</div>
                             <div>Skontrolujte históriu, počet kilometrov, výbavu...</div>
-                            <a href={'https://www.carvertical.com/sk/predbezna-kontrola?a=uc&b=82735778&chan=abeudskt3&vin=' + (recordQuery.data.pltRecord.vin) } target="_blank" className="block mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700 text-center">Overiť vozidlo</a>
+                            <a rel="noreferrer" href={'https://www.carvertical.com/sk/predbezna-kontrola?a=uc&b=82735778&chan=abeudskt3&vin=' + (recordQuery?.data?.pltRecord?.vin) } target="_blank" className="block mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700 text-center">Overiť vozidlo</a>
                         </div>
                     </div>
                     <div className={"rounded border py-2 px-3" + (stkValid === 1 && ekValid === 1 ? ' border-green-600 text-green-900 bg-green-100' : ' border-orange-600 text-orange-900 bg-orange-100')}>
@@ -324,9 +324,9 @@ const Detail: NextPageWithLayout = () => {
                             <div className="font-bold mb-1">Overenie STK a EK</div>
                             <div>Overenie STK a EK z online zdrojov.</div>
                             {(stkValid !== 1 || ekValid !== 1) && <button type="button" className="mt-4 w-full bg-amber-600 p-1 text-white rounded-md border border-amber-700" onClick={setStkEk}>Overiť STK / EK</button>}
-                            {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
+                            {stkValid === 1 && <div className="mt-2">Platnosť STK: { stk?.getDate() }.{ stk && stk?.getMonth() + 1 }.{ stk?.getFullYear() }</div>}
                             {stkValid === 2 && <div className="mt-2 text-red-900">Platnosť STK: neplatné</div>}
-                            {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
+                            {ekValid === 1 && <div className="mt-2">Platnosť EK: { ek?.getDate() }.{ ek && ek?.getMonth() + 1 }.{ ek?.getFullYear() }</div>}
                             {ekValid === 2 && <div className="mt-2 text-red-900">Platnosť EK: neplatné</div>}
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { TypeRadio } from "components/create/TypeRadio";
 import { trpc } from "utils/trpc";
 import { NextPageWithLayout } from "../_app";
+import { PackageRadio } from "components/create/PackageRadio";
 
 const CreateRecord: NextPageWithLayout = () => {
     const { data: session } =  useSession();
@@ -18,6 +19,7 @@ const CreateRecord: NextPageWithLayout = () => {
 
     const [price, setPrice] = useState<number>(offerQuery?.data?.priceCurrent || 0);
     const [type, setType] = useState<number>(0);
+    const [pkg, setPkg] = useState<number>(0);
 
     useEffect(() => {
         setPrice(offerQuery?.data?.priceCurrent || 0)
@@ -36,6 +38,7 @@ const CreateRecord: NextPageWithLayout = () => {
             title: offerQuery?.data?.title as string,
             price,
             type,
+            pkg,
             userId: session?.user?.id as number,
             platformId: router?.query?.id as string
         })
@@ -67,6 +70,9 @@ const CreateRecord: NextPageWithLayout = () => {
                     </div>
                     <div className="space-y-2">
                         <TypeRadio changeType={setType} />
+                    </div>
+                    <div className="space-y-2">
+                        <PackageRadio changeType={setPkg} />
                     </div>
                     <div className="flex justify-end w-full">
                         <button type="submit" className="button-primary">

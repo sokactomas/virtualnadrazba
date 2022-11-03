@@ -26,6 +26,7 @@ model Record {
     price Int
     bidPrice Int @default(0)
     type Int
+    pkg Int
     user User @relation(fields: [userId], references: [id])
     userId Int
     platformId String?

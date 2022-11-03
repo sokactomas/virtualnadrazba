@@ -4,24 +4,33 @@ import { BoltIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const types = [
     {
-        icon: <BoltIcon className='w-5 h-5' />,
-        name: 'Rýchla',
-        description: 'Záujemca uvidí pri ponuke poslednú ponuknutú cenu.',
+        icon: <EyeSlashIcon className='w-5 h-5' />,
+        name: 'Aukcia C2C',
+        description: 'Klient môže ponúknuť vozidlo do aukcie výhradne pre súkromných uživateľov.',
+        info: 'obchodovanie na AB.EU najnižší poplatok',
         type: 0,
     },
     {
-        icon: <EyeSlashIcon className='w-5 h-5' />,
-        name: 'Tichá',
-        description: 'Záujemca neuvidí ponuknutú cenu. Môže ponúknuť cenu, ktorá je podľa neho adekvátna.',
+        icon: <BoltIcon className='w-5 h-5' />,
+        name: 'Aukcia C2B',
+        description: 'Klient môže ponúknuť vozidlo do aukcie výhradne pre autobazáre.',
+        info: 'obchodovanie v ABM stredný poplatok',
         type: 1,
+    },
+    {
+        icon: <EyeSlashIcon className='w-5 h-5' />,
+        name: 'Aukcia Combo',
+        description: 'V najvyššom balíku bude môcť klient ponúknuť svoje auto súkromníkom aj firmám.',
+        info: 'obchodovanie na AB.EU a obchodovanie v ABM najvyšší poplatok',
+        type: 2,
     },
 ]
 
-type TypeRadioProps = {
+type PackageRadioProps = {
     changeType: (type: any) => void
 }
 
-export const TypeRadio: FC<TypeRadioProps> = ({ changeType }) => {
+export const PackageRadio: FC<PackageRadioProps> = ({ changeType }) => {
     const [selectedType, setSelectedType] = useState(types[0]);
 
     useEffect(() => {
@@ -37,7 +46,7 @@ export const TypeRadio: FC<TypeRadioProps> = ({ changeType }) => {
         <div className='w-full'>
             <RadioGroup value={(selectedType)} onChange={(type) => handleOnChange(type)}>
                 <RadioGroup.Label className='block mb-2 text-sm font-medium text-gray-900'>
-                    Typ dražby
+                    Balík
                 </RadioGroup.Label>
                 <div className='flex flex-col space-y-2 lg:space-y-0 lg:flex-row w-full lg:space-x-2'>
                     {types?.map((type) => (
@@ -56,8 +65,13 @@ export const TypeRadio: FC<TypeRadioProps> = ({ changeType }) => {
                                         </RadioGroup.Label>
                                     </div>
                                     <RadioGroup.Description as='span'>
-                                        <span className="text-sm">
-                                            {type.description}
+                                        <span className='space-y-2'>
+                                            <span className="text-sm block">
+                                                {type.description}
+                                            </span>
+                                            <span className="text-sm block">
+                                                {type.info}
+                                            </span>
                                         </span>
                                     </RadioGroup.Description>
                                 </div>
