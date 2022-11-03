@@ -38,8 +38,10 @@ const Account: NextPageWithLayout = () => {
                     Moje konto
                 </div>
                 <div>
-                    <Link href={'/create'} className="button-primary">
-                        Pridať do dražby
+                    <Link href={'/create'}>
+                        <a className="button-primary">
+                            Pridať do dražby
+                        </a>
                     </Link>
                 </div>
             </div>
@@ -47,41 +49,51 @@ const Account: NextPageWithLayout = () => {
                 <div className="col-span-2 lg:col-span-1">
                     <ul className='space-y-2 w-full'>
                         <li className="group">
-                            <Link href={"/account"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
-                                <ArchiveBoxIcon className="w-5 h-5" />
-                                <span>Moja ponuka</span>
+                            <Link href={"/account"}>
+                                <a className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                                    <ArchiveBoxIcon className="w-5 h-5" />
+                                    <span>Moja ponuka</span>
+                                </a>
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/account/auction"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
-                                <QueueListIcon className="w-5 h-5" />
-                                <span>Moje dražby</span>
+                            <Link href={"/account/auction"}>
+                                <a className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                                    <QueueListIcon className="w-5 h-5" />
+                                    <span>Moje dražby</span>
+                                </a>
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/account/bid"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
-                                <BanknotesIcon className="w-5 h-5" />
-                                <span>Moje cenové ponuky</span>
+                            <Link href={"/account/bid"}>
+                                <a className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                                    <BanknotesIcon className="w-5 h-5" />
+                                    <span>Moje cenové ponuky</span>
+                                </a>
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300 justify-between">
-                                <span className="flex space-x-4 items-center">
-                                    <GlobeEuropeAfricaIcon className="w-5 h-5" />
-                                    <span>Dražba</span>
-                                </span>
-                                <span className="text-sm text-white bg-red-600 px-2 py-0.5 rounded-full flex items-center space-x-2">
-                                    <span className="h-2 w-2 bg-white block rounded-full relative">
-                                        <span className="h-2 w-2 bg-white block rounded-full absolute top-0 bottom-0 animate-ping"></span>
+                            <Link href={"/"}>
+                                <a className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300 justify-between">
+                                    <span className="flex space-x-4 items-center">
+                                        <GlobeEuropeAfricaIcon className="w-5 h-5" />
+                                        <span>Dražba</span>
                                     </span>
-                                    <span>živé</span>
-                                </span>
+                                    <span className="text-sm text-white bg-red-600 px-2 py-0.5 rounded-full flex items-center space-x-2">
+                                        <span className="h-2 w-2 bg-white block rounded-full relative">
+                                            <span className="h-2 w-2 bg-white block rounded-full absolute top-0 bottom-0 animate-ping"></span>
+                                        </span>
+                                        <span>živé</span>
+                                    </span>
+                                </a>
                             </Link>
                         </li>
                         <li className="group">
-                            <Link href={"/create"} className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
-                                <PlusIcon className="w-5 h-5" />
-                                <span>Pridať do dražby</span>
+                            <Link href={"/create"}>
+                                <a className="text-gray-700 flex items-center space-x-4 border bg-gray-100 py-1 px-4 rounded-lg group-hover:text-black group-hover:border-gray-300">
+                                    <PlusIcon className="w-5 h-5" />
+                                    <span>Pridať do dražby</span>
+                                </a>
                             </Link>
                         </li>
                     </ul>

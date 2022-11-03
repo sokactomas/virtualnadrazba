@@ -42,9 +42,11 @@ export const Record: FC<RecordProps> = ({ record }) => {
                         </div>
                     </div>
                     <div className="flex items-center space-x-2 w-full justify-end">
-                        <Link href={`/create/${record?.id}`} className='flex text-gray-700 items-center space-x-2 hover:text-black border py-1.5 px-3 rounded-xl hover:border-black'>
-                            <ScaleIcon className="w-5 h-5" />
-                            <span>pridať do dražby</span>
+                        <Link href={`/create/${record?.id}`}>
+                            <a className='flex text-gray-700 items-center space-x-2 hover:text-black border py-1.5 px-3 rounded-xl hover:border-black'>
+                                <ScaleIcon className="w-5 h-5" />
+                                <span>pridať do dražby</span>
+                            </a>
                         </Link>
                     </div>
                 </div>

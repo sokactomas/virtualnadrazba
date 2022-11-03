@@ -17,7 +17,7 @@ export const Header:FC = () => {
                 <div className='flex items-center space-x-2'>
                     <Menu as="div" className="relative inline-block text-left">
                         <div>
-                            <Menu.Button className="inline-flex w-full space-x-2 justify-center rounded-md px-4 py-2 text-sm font-medium text-gray-900 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                            <Menu.Button className="flex w-full space-x-2 justify-center rounded-md px-4 py-2 text-sm font-medium text-gray-900 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                                 <UserCircleIcon className="w-5 h-5" />
                                 <span>{ session?.user?.name }</span>
                                 <ChevronDownIcon className="w-4 h-4" />
@@ -36,13 +36,10 @@ export const Header:FC = () => {
                                 <div className="px-1 py-1 ">
                                     <Menu.Item>
                                         {({ active }) => (
-                                            <Link href={'/account'}
-                                                className={`${active ? 'text-red-700' : 'text-gray-900'
-                                                    } group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm`}
-                                            >
-                                                <span>
+                                            <Link href={'/account'}>
+                                                <a className={`${active ? 'text-red-700' : 'text-gray-900'} group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm`}>
                                                     Moje konto
-                                                </span>
+                                                </a>
                                             </Link>
                                         )}
                                     </Menu.Item>
@@ -82,8 +79,10 @@ export const Header:FC = () => {
     return (
         <header className="fixed top-0 left-0 right-0 bg-white z-10 h-[56px] shadow-sm flex items-center justify-center">
             <div className="w-full lg:w-4/5 px-5 lg:px-0 h-full flex items-center justify-between">
-                <Link href={"/"} className="text-3xl font-bold">
-                    Virtualnadrazba.eu
+                <Link href={"/"}>
+                    <a className="text-3xl font-bold">
+                        Virtualnadrazba.eu
+                    </a>
                 </Link>
                 <div>
                     { renderAuth() }

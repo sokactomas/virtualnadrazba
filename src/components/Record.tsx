@@ -178,9 +178,11 @@ export const Record: FC<RecordProps> = ({ record }) => {
                             </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <Link href={`/detail/${record?.id}`} className='flex items-center space-x-2 hover:underline hover:text-red-600'>
-                                <EyeIcon className="w-5 h-5" />
-                                <span>zobraziť detail</span>
+                            <Link href={`/detail/${record?.id}`}>
+                                <a className='flex items-center space-x-2 hover:underline hover:text-red-600'>
+                                    <EyeIcon className="w-5 h-5" />
+                                    <span>zobraziť detail</span>
+                                </a>
                             </Link>
                             { renderCancel() }
                         </div>
