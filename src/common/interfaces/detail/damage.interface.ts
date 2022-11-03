@@ -1,6 +1,8 @@
 export interface IDamage {
     score: number;
     box: number[];
+    damage_category: string;
+    damage_location: string;
 }
 
 export interface IPhotoDamage {
