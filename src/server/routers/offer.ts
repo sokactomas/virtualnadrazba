@@ -3,6 +3,8 @@ import { PlatformCoreConfig } from '@uc-platform/platform-core/src/config/Platfo
 import { AdvertisementService } from '@uc-platform/advertisement-service-client/src/service/AdvertisementService.js';
 import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
 import { z } from 'zod';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const config = new PlatformCoreConfig();
 

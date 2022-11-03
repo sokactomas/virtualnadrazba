@@ -1,6 +1,6 @@
-import { Offer } from "~/components/account/Offer";
-import { Record } from "~/components/create/Record";
-import { NextPageWithLayout } from "~/pages/_app";
+import { Offer } from "components/account/Offer";
+import { Record } from "components/create/Record";
+import { NextPageWithLayout } from "pages/_app";
 
 const Create: NextPageWithLayout = () => {
     return (

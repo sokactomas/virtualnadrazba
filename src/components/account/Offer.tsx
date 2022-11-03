@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { FC } from "react";
-import { trpc } from "~/utils/trpc";
+import { trpc } from "utils/trpc";
 import { Record } from "../create/Record";
 import { RecordPlaceholder } from "../RecordPlaceholder";
 
@@ -22,5 +22,9 @@ export const Offer: FC = () => {
         ))
     }
 
-    return renderRecords();
+    return (
+        <>
+            { renderRecords() }
+        </>
+    )
 }

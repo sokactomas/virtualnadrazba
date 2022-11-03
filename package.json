@@ -34,6 +34,7 @@
     "@uc-platform/advertisement-service-client": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.1",
     "moment": "^2.29.4",

@@ -11,6 +11,9 @@ const CreateRecord: NextPageWithLayout = () => {
 
     const offerQuery = trpc.offer.get.useQuery({
         id: router?.query?.id as string
+    },{
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     })
 
     const [price, setPrice] = useState<number>(offerQuery?.data?.priceCurrent || 0);
