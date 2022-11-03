@@ -24,6 +24,7 @@ model Record {
     id Int @default(autoincrement()) @id
     title String
     price Int
+    bidPrice Int @default(0)
     type Int
     user User @relation(fields: [userId], references: [id])
     userId Int
@@ -35,6 +36,7 @@ model Record {
 
 model Bid {
   id Int @default(autoincrement()) @id
+  price Int
   userId Int
   user User @relation(fields: [userId], references: [id])
   recordId Int

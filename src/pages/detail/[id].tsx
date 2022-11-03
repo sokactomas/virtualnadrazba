@@ -263,9 +263,7 @@ const Detail: NextPageWithLayout = () => {
             </article>
             <aside className="p-info space-y-2">
                 <BidPrice 
-                    userId={recordQuery?.data?.record?.userId}
-                    id={recordQuery?.data?.record?.id} 
-                    currentPrice={recordQuery?.data?.record?.price} 
+                    record={recordQuery?.data?.record} 
                 />
                 <div className="rounded border py-2 px-3 border-green-600 text-green-900 bg-green-100 flex items-center justify-center space-x-4">
                     <ShieldCheckIcon className="w-14 h-14" />

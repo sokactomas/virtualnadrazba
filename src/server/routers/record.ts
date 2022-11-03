@@ -6,6 +6,9 @@ import { AdvertisementService } from '@uc-platform/advertisement-service-client/
 import { AdvertisementServiceClientConfig } from '@uc-platform/advertisement-service-client/src/config/AdvertisementServiceClientConfig.js'
 import { z } from 'zod';
 import * as dotenv from 'dotenv';
+import { observable } from "@trpc/server/observable";
+import { Record } from "@prisma/client";
+import { EventEmitter } from "events";
 dotenv.config();
 
 const config = new PlatformCoreConfig();
@@ -15,6 +18,8 @@ const advertisementService: AdvertisementService = new AdvertisementService(
         config
     )
 );
+
+const ee = new EventEmitter();
 
 export const recordRouter = router({
     list: publicProcedure
@@ -142,5 +147,56 @@ export const recordRouter = router({
             record,
             pltRecord: pltRecord.data
         };
+    }),
+    fastBid: publicProcedure
+        .input(z.object({
+            userId: z.number().positive(),
+            recordId: z.number().positive(),
+            price: z.number().positive(),
+        }))
+        .mutation(async ({ input }) => {
+            const record = await prisma.record.findFirst({
+                where: {
+                    id: input?.recordId
+                }
+            })
+
+            if (!record || record?.bidPrice >= input?.price) {
+                return null;
+            }
+
+            const updatedRecord = await prisma.record.update({
+                where: {
+                    id: input?.recordId
+                },
+                data: {
+                    bidPrice: input?.price
+                }
+            })
+
+            ee.emit('update', updatedRecord);
+
+            // emit updated pride
+            const bid = await prisma.bid.create({
+                data: {
+                    price: input?.price,
+                    userId: input?.userId,
+                    recordId: input?.recordId,
+                }
+            })
+
+            return {
+                updatedRecord,
+                bid
+            };
+        }),
+    onUpdate: publicProcedure.subscription(() => {
+        return observable<Record>((emit) => {
+            const onUpdate = (data: Record) => emit.next(data);
+            ee.on('update', onUpdate);
+            return () => {
+                ee.off('update', onUpdate);
+            }
+        })
     })
 })
