@@ -16,6 +16,7 @@ model User {
     password String?
     email String @unique
     records Record[]
+    bids Bid[]
     platformId String?
 }
 
@@ -29,4 +30,14 @@ model Record {
     platformId String?
     validUntil DateTime
     createdAt DateTime @default(now())
+    bids Bid[]
+}
+
+model Bid {
+  id Int @default(autoincrement()) @id
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  recordId Int
+  record Record @relation(fields: [recordId], references: [id])
+  createdAt DateTime @default(now())
 }
